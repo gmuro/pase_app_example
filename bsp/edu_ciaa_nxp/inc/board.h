@@ -66,6 +66,18 @@ typedef enum
    BOARD_LED_STATE_ON,
 }board_ledState_enum;
 
+typedef enum
+{
+   BOARD_TEC_ID_1 = 0,
+   BOARD_TEC_ID_2,
+}board_switchId_enum;
+
+typedef enum
+{
+   BOARD_TEC_STATE_LOW = 0,
+   BOARD_TEC_STATE_HIGH,
+}board_switchState_enum;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
