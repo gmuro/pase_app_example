@@ -129,10 +129,10 @@ TASK(PeriodicTask)
 
    state = 1-state;
 
-   if (state)
-      bsp_ledAction(BOARD_LED_ID_AMARILLO, BSP_LED_ACTION_ON);
-   else
-      bsp_ledAction(BOARD_LED_ID_AMARILLO, BSP_LED_ACTION_OFF);
+    if (state)
+        bsp_ledAction(BOARD_LED_ID_YELLOW, BSP_LED_ACTION_ON);
+    else
+        bsp_ledAction(BOARD_LED_ID_YELLOW, BSP_LED_ACTION_OFF);
 
    TerminateTask();
 }
