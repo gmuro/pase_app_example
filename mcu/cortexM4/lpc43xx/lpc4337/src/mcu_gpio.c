@@ -95,9 +95,9 @@ extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
                    p_gpio[id].modefunc);
 
    Chip_GPIO_SetDir(LPC_GPIO_PORT,
-         p_gpio[id].gpio.port,
-         (1<<p_gpio[id].gpio.pin),
-         (dir /*== MCU_GPIO_DIRECTION_OUTPUT*/));
+                    p_gpio[id].gpio.port,
+                    (1<<p_gpio[id].gpio.pin),
+                    (dir == MCU_GPIO_DIRECTION_OUTPUT));
 }
 
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
