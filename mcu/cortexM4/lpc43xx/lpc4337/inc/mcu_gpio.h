@@ -76,7 +76,7 @@ typedef enum
 extern void mcu_gpio_init(void);
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id, mcu_gpio_direction_enum dir);
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state);
-extern void mcu_gpio_readInput(mcu_gpio_pinId_enum id);
+extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id);
 
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
