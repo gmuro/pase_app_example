@@ -56,7 +56,14 @@ static const mcu_gpio_pinId_enum ledMap[] =
    MCU_GPIO_PIN_ID_105,
 };
 
+static const mcu_gpio_pinId_enum switchMap[] =
+{
+   MCU_GPIO_PIN_ID_38,
+   MCU_GPIO_PIN_ID_42,
+};
+
 static const int8_t totalLeds = sizeof(ledMap) / sizeof(ledMap[0]);
+static const int8_t totalSwitches = sizeof(switchMap) / sizeof(switchMap[0]);
 
 /*==================[internal functions declaration]=========================*/
 
@@ -69,11 +76,15 @@ static const int8_t totalLeds = sizeof(ledMap) / sizeof(ledMap[0]);
 /*==================[external functions definition]==========================*/
 extern void board_init(void)
 {
-   int32_t i;
+   int8_t i;
 
    for (i = 0 ; i < totalLeds ; i++)
    {
       mcu_gpio_setDirection(ledMap[i], MCU_GPIO_DIRECTION_OUTPUT);
+   }
+   for (i = 0 ; i < totalSwitches ; i++)
+   {
+      mcu_gpio_setDirection(switchMap[i], MCU_GPIO_DIRECTION_INPUT);
    }
 }
 
@@ -81,6 +92,12 @@ extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
 {
    mcu_gpio_setOut(ledMap[id], state == BOARD_LED_STATE_OFF);
 }
+
+extern board_switchState_enum board_switchGet(board_switchId_enum id)
+{
+   return (mcu_gpio_readInput(id)?BOARD_TEC_NON_PRESSED:BOARD_TEC_PRESSED);
+}
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

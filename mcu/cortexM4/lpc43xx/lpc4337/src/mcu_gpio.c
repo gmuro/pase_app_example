@@ -66,8 +66,10 @@ typedef struct
 
 static const p_gpio_type p_gpio[] =
 {
-      {{2,10}, {0,14}, FUNC0},
-      {{2,11}, {1,11}, FUNC0},
+   {{2,10}, {0,14}, FUNC0},
+   {{2,11}, {1,11}, FUNC0},
+   {{1,0}, {0,4}, FUNC0},
+   {{1,1}, {0,8}, FUNC0},
 };
 
 /*==================[internal functions declaration]=========================*/
@@ -84,22 +86,33 @@ extern void mcu_gpio_init(void)
    Chip_GPIO_Init(LPC_GPIO_PORT);
 }
 
-extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id, mcu_gpio_direction_enum dir)
+extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
+                                  mcu_gpio_direction_enum dir)
 {
-   Chip_SCU_PinMux(p_gpio[id].p.port, p_gpio[id].p.pin, MD_PLN, p_gpio[id].modefunc);
+   Chip_SCU_PinMux(p_gpio[id].p.port,
+                   p_gpio[id].p.pin,
+                   MD_PLN,
+                   p_gpio[id].modefunc);
 
    Chip_GPIO_SetDir(LPC_GPIO_PORT,
-         p_gpio[id].gpio.port,
-         (1<<p_gpio[id].gpio.pin),
-         (dir == MCU_GPIO_DIRECTION_OUTPUT));
+                    p_gpio[id].gpio.port,
+                    (1<<p_gpio[id].gpio.pin),
+                    (dir == MCU_GPIO_DIRECTION_OUTPUT));
 }
 
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
 {
    Chip_GPIO_SetPinState(LPC_GPIO_PORT,
-         p_gpio[id].gpio.port,
-         p_gpio[id].gpio.pin,
-         state);
+                         p_gpio[id].gpio.port,
+                         p_gpio[id].gpio.pin,
+                         state);
+}
+
+extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id)
+{
+   return Chip_GPIO_GetPinState(LPC_GPIO_PORT,
+                                p_gpio[id].gpio.port,
+                                p_gpio[id].gpio.pin);
 }
 
 /** @} doxygen end group definition */

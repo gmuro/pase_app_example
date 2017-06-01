@@ -56,8 +56,8 @@ extern "C" {
 /*==================[typedef]================================================*/
 typedef enum
 {
-   BOARD_LED_ID_AMARILLO = 0,
-   BOARD_LED_ID_ROJO,
+   BOARD_LED_ID_YELLOW = 0,
+   BOARD_LED_ID_RED,
 }board_ledId_enum;
 
 typedef enum
@@ -66,13 +66,25 @@ typedef enum
    BOARD_LED_STATE_ON,
 }board_ledState_enum;
 
+typedef enum
+{
+   BOARD_TEC_ID_1 = 0,
+   BOARD_TEC_ID_2,
+}board_switchId_enum;
+
+typedef enum
+{
+   BOARD_TEC_NON_PRESSED = 0,
+   BOARD_TEC_PRESSED,
+}board_switchState_enum;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 extern void board_init(void);
 extern void board_ledSet(board_ledId_enum id, board_ledState_enum state);
 extern board_ledState_enum board_ledGet(board_ledId_enum id);
-
+extern board_switchState_enum board_switchGet(board_switchId_enum id);
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
 }
