@@ -49,6 +49,8 @@
 #include "bsp.h"
 
 /*==================[macros and definitions]=================================*/
+#define FIRST_START_DELAY_MS 350
+#define PERIOD_MS 250
 
 /*==================[internal data declaration]==============================*/
 
@@ -112,7 +114,7 @@ TASK(InitTask)
 {
    bsp_init();
 
-   SetRelAlarm(ActivatePeriodicTask, 350, 250);
+   SetRelAlarm(ActivatePeriodicTask, FIRST_START_DELAY_MS, PERIOD_MS);
 
    TerminateTask();
 }
