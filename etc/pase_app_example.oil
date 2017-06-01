@@ -33,7 +33,7 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.              */
 /*                                                                           */
 /*****************************************************************************/
-/*  Blinking example OIL configuration file                                  */
+/*  PASE app example OIL configuration file                                  */
 /*                                                                           */
 /*  This file describes the current OSEK configuration.                      */
 /*  References:                                                              */
