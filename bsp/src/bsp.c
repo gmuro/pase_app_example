@@ -63,8 +63,6 @@ extern void bsp_init(void)
 {
    mcu_init();
 
-   mcu_gpio_init();
-
    board_init();
 }
 
