@@ -66,10 +66,10 @@ typedef struct
 
 static const p_gpio_type p_gpio[] =
 {
-      {{2,10}, {0,14}, FUNC0},
-      {{2,11}, {1,11}, FUNC0},
-      {{1,0}, {0,4}, FUNC0},
-      {{1,1}, {0,8}, FUNC0},
+   {{2,10}, {0,14}, FUNC0},
+   {{2,11}, {1,11}, FUNC0},
+   {{1,0}, {0,4}, FUNC0},
+   {{1,1}, {0,8}, FUNC0},
 };
 
 /*==================[internal functions declaration]=========================*/
