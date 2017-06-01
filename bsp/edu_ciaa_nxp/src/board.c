@@ -76,7 +76,7 @@ static const int8_t totalSwitches = sizeof(switchMap) / sizeof(switchMap[0]);
 /*==================[external functions definition]==========================*/
 extern void board_init(void)
 {
-   int32_t i;
+   int8_t i;
 
    for (i = 0 ; i < totalLeds ; i++)
    {
