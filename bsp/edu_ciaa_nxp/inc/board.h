@@ -74,8 +74,8 @@ typedef enum
 
 typedef enum
 {
-   BOARD_TEC_STATE_LOW = 0,
-   BOARD_TEC_STATE_HIGH,
+   NON_PRESSED = 0,
+   PRESSED,
 }board_switchState_enum;
 
 /*==================[external data declaration]==============================*/

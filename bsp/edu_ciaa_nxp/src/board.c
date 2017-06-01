@@ -95,7 +95,7 @@ extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
 
 extern void board_switchGet(board_switchId_enum id, board_switchState_enum state)
 {
-   mcu_gpio_readInput(switchMap[id], state);
+   return (mcu_gpio_readInput(id)?PRESSED:NON_PRESSED);
 }
 
 
