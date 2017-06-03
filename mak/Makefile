@@ -33,12 +33,14 @@
 ###############################################################################
 
 # Project Name: based on Project Path and used to define OSEK configuration file
-PROJECT_NAME               = $(lastword $(subst $(DS), , $(PROJECT_PATH)))
+PROJECT_NAME         = $(lastword $(subst $(DS), , $(PROJECT_PATH)))
+
+PASE_APP_SEL 		?= 1
 
 # Internal modules
-$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)application$(DS)src
-SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)application$(DS)src$(DS)*.c)
-INC_FILES            += $(PROJECT_PATH)$(DS)application$(DS)inc
+$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)src
+SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)src$(DS)*.c)
+INC_FILES            += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)inc
 
 $(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)mcu$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)src
 SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)mcu$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)src$(DS)*.c)
@@ -52,7 +54,7 @@ INC_FILES            += $(PROJECT_PATH)$(DS)bsp$(DS)inc
 INC_FILES            += $(PROJECT_PATH)$(DS)bsp$(DS)$(BOARD)$(DS)inc
 
 # configuration for OSEK-OS
-OIL_FILES            += $(PROJECT_PATH)$(DS)etc$(DS)$(PROJECT_NAME).oil
+OIL_FILES            += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)etc$(DS)app.oil
 
 # Modules needed for this project
 MODS ?= modules$(DS)rtos	\
