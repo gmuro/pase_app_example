@@ -48,6 +48,7 @@
 #include "chip.h"
 
 /*==================[macros and definitions]=================================*/
+
 /** \brief Dio Type */
 typedef struct
 {
@@ -62,6 +63,13 @@ typedef struct
    uint16_t modefunc;
 }p_gpio_type;
 
+typedef struct
+{
+   mcu_gpio_eventInput_callBack_type cb;
+   mcu_gpio_eventTypeInput_enum evType;
+   mcu_gpio_pinId_enum pinId;
+}eventsInputs_type;
+
 /*==================[internal data declaration]==============================*/
 
 static const p_gpio_type p_gpio[] =
@@ -71,6 +79,8 @@ static const p_gpio_type p_gpio[] =
    {{1,0}, {0,4}, FUNC0},
    {{1,1}, {0,8}, FUNC0},
 };
+
+static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
 
 /*==================[internal functions declaration]=========================*/
 
@@ -83,7 +93,14 @@ static const p_gpio_type p_gpio[] =
 /*==================[external functions definition]==========================*/
 extern void mcu_gpio_init(void)
 {
+   int32_t i;
+
    Chip_GPIO_Init(LPC_GPIO_PORT);
+
+   for (i = 0 ; i < MCU_GPIO_IN_EVENT_TOTAL ; i++)
+   {
+      eventsInputs[i].cb = NULL;
+   }
 }
 
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
@@ -114,6 +131,48 @@ extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id)
                                 p_gpio[id].gpio.port,
                                 p_gpio[id].gpio.pin);
 }
+
+extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
+      mcu_gpio_eventTypeInput_enum evType,
+      mcu_gpio_eventInput_callBack_type cb)
+{
+   int32_t i;
+   int32_t ret = -1;
+
+   for (i = 0 ; (i < MCU_GPIO_IN_EVENT_TOTAL) && (ret == -1) ; i++)
+   {
+      if (eventsInputs[i].cb == NULL)
+      {
+         eventsInputs[i].cb = cb;
+         eventsInputs[i].evType = evType;
+         eventsInputs[i].pinId = id;
+         ret = 0;
+      }
+   }
+
+   if (ret != -1)
+   {
+      /* TODO: configurar interrupción de ese pin */
+   }
+}
+
+
+/* TODO: isr del los pines */
+#if 0
+
+void nombre_de_isr(void)
+{
+   mcu_gpio_pinId_enum idPin;
+   mcu_gpio_eventTypeInput_enum evType;
+
+   // determinar pin que interrumpio y guardarlo en idPin
+   // determinar flanco y guardarlo en evType
+
+
+   eventsInputs[idPin].cb(idPin, evType);
+}
+
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
