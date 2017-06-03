@@ -90,7 +90,7 @@ extern void board_init(void)
 
 extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
 {
-   mcu_gpio_setOut(ledMap[id], state == BOARD_LED_STATE_OFF);
+   mcu_gpio_setOut(ledMap[id], state == BOARD_LED_STATE_ON);
 }
 
 extern board_switchState_enum board_switchGet(board_switchId_enum id)
