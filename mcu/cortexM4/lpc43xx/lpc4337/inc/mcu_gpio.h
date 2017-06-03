@@ -46,6 +46,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "stdbool.h"
+#include "stdint.h"
 
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
@@ -70,6 +71,14 @@ typedef enum
    MCU_GPIO_DIRECTION_OUTPUT,
 }mcu_gpio_direction_enum;
 
+typedef enum
+{
+   MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE = 0,
+   MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE,
+}mcu_gpio_eventTypeInput_enum;
+
+typedef void (*mcu_gpio_eventInput_callBack_type)(mcu_gpio_pinId_enum id, mcu_gpio_eventTypeInput_enum evType);
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
@@ -77,6 +86,9 @@ extern void mcu_gpio_init(void);
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id, mcu_gpio_direction_enum dir);
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state);
 extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id);
+extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
+      mcu_gpio_eventTypeInput_enum evType,
+      mcu_gpio_eventInput_callBack_type cb);
 
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
