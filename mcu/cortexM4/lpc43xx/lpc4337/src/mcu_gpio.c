@@ -46,6 +46,7 @@
 #include "mcu.h"
 #include "stdint.h"
 #include "chip.h"
+#include "os.h"
 
 /*==================[macros and definitions]=================================*/
 /* PININT index used for GPIO mapping */
@@ -194,7 +195,7 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
    }
 }
 
-void GPIO0_IRQHandler(void)
+ISR(GPIO0_IRQHandler)
 {
 
    //disable interrupts
