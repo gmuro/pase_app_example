@@ -163,7 +163,7 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
 
    if (ret != -1)
    {
-      mcu_gpio_setDirection(eventsInputs[i].pinId,
+      mcu_gpio_setDirection(id,
                             MCU_GPIO_DIRECTION_INPUT);
       /* Configure interrupt channel for the GPIO pin in SysCon block */
       Chip_SCU_GPIOIntPinSel(LPC_GPIO_PIN_INT,
