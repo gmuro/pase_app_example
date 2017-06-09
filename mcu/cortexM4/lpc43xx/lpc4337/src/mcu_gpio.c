@@ -163,7 +163,34 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
 
    if (ret != -1)
    {
-      /* TODO: configurar interrupción de ese pin */
+      mcu_gpio_setDirection(eventsInputs[i].pinId,
+                            MCU_GPIO_DIRECTION_INPUT);
+      /* Configure interrupt channel for the GPIO pin in SysCon block */
+      Chip_SCU_GPIOIntPinSel(LPC_GPIO_PIN_INT,
+                             p_gpio[id].gpio.port,
+                             p_gpio[id].gpio.pin);
+
+      /* Configure channel interrupt as edge sensitive and falling edge
+         interrupt */
+      Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
+                                 PININTCH(PININT_INDEX));
+      Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT,
+                                 PININTCH(PININT_INDEX));
+      switch(evType)
+      {
+         case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
+            Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT,
+                                     PININTCH(PININT_INDEX));
+            break;
+         case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
+            Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT,
+                                      PININTCH(PININT_INDEX));
+            break;
+      }
+
+      /* Enable interrupt in the NVIC */
+      NVIC_ClearPendingIRQ((IRQn_Type)PININT_NVIC_NAME);
+      NVIC_EnableIRQ((IRQn_Type)PININT_NVIC_NAME);
    }
 }
 
