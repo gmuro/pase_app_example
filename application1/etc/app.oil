@@ -97,5 +97,12 @@ OSEK OSEK {
       TYPE = HARDWARE;
       COUNTER = HWCOUNTER0;
    };
+   
+      ISR GPIO0_IRQHandler {
+      INTERRUPT = GPIO0;
+	  CATEGORY = 2;
+	  PRIORITY = 0;
+   };  
+   
 
 };
