@@ -48,6 +48,11 @@
 #include "chip.h"
 
 /*==================[macros and definitions]=================================*/
+/* PININT index used for GPIO mapping */
+#define PININT_INDEX 0
+/* GPIO interrupt NVIC interrupt name */
+#define PININT_NVIC_NAME    PIN_INT0_IRQn
+
 
 /** \brief Dio Type */
 typedef struct
