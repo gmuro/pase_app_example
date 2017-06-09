@@ -138,8 +138,8 @@ extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id)
 }
 
 extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
-      mcu_gpio_eventTypeInput_enum evType,
-      mcu_gpio_eventInput_callBack_type cb)
+                                      mcu_gpio_eventTypeInput_enum evType,
+                                      mcu_gpio_eventInput_callBack_type cb)
 {
    int32_t i;
    int32_t ret = -1;
