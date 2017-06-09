@@ -167,6 +167,19 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
    }
 }
 
+void GPIO0_IRQHandler(void)
+{
+
+   //disable interrupts
+   NVIC_DisableIRQ(PININT_NVIC_NAME);
+   //Clear interrupt
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
+                              PININTCH(PININT_INDEX));
+   actualizar_variable();
+   //Enable interrupt
+   NVIC_EnableIRQ(PININT_NVIC_NAME);
+   return;
+}
 
 /* TODO: isr del los pines */
 #if 0
