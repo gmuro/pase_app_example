@@ -167,25 +167,29 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
       mcu_gpio_setDirection(id,
                             MCU_GPIO_DIRECTION_INPUT);
       /* Configure interrupt channel for the GPIO pin in SysCon block */
-      Chip_SCU_GPIOIntPinSel(LPC_GPIO_PIN_INT,
+      Chip_SCU_GPIOIntPinSel(0,
                              p_gpio[id].gpio.port,
                              p_gpio[id].gpio.pin);
+      /* Test SW4 forzado */
+      /*
+	  Chip_SCU_GPIOIntPinSel(0, 1, 9);
+      */
 
       /* Configure channel interrupt as edge sensitive and falling edge
          interrupt */
       Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
-                                 PININTCH(PININT_INDEX));
+    		  PININTCH0);
       Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT,
-                                 PININTCH(PININT_INDEX));
+    		  PININTCH0);
       switch(evType)
       {
          case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
             Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT,
-                                     PININTCH(PININT_INDEX));
+            		PININTCH0);
             break;
          case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
             Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT,
-                                      PININTCH(PININT_INDEX));
+            		PININTCH0);
             break;
       }
 
@@ -202,7 +206,7 @@ ISR(GPIO0_IRQHandler)
    NVIC_DisableIRQ(PININT_NVIC_NAME);
    //Clear interrupt
    Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
-                              PININTCH(PININT_INDEX));
+		   PININTCH0);
    actualizar_variable();
    //Enable interrupt
    NVIC_EnableIRQ(PININT_NVIC_NAME);
