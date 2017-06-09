@@ -89,7 +89,7 @@ extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id);
 extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
       mcu_gpio_eventTypeInput_enum evType,
       mcu_gpio_eventInput_callBack_type cb);
-
+extern void actualizar_variable(void);
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
 }

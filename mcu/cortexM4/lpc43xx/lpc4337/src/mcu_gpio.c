@@ -86,7 +86,7 @@ static const p_gpio_type p_gpio[] =
 };
 
 static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
-
+static volatile variable = 0;
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
@@ -106,6 +106,12 @@ extern void mcu_gpio_init(void)
    {
       eventsInputs[i].cb = NULL;
    }
+}
+
+extern void actualizar_variable()
+{
+   variable = variable +1;
+   return;
 }
 
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
