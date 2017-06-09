@@ -101,7 +101,7 @@ extern void mcu_gpio_init(void)
    int32_t i;
 
    Chip_GPIO_Init(LPC_GPIO_PORT);
-
+   Chip_Clock_Enable(CLK_MX_GPIO);
    for (i = 0 ; i < MCU_GPIO_IN_EVENT_TOTAL ; i++)
    {
       eventsInputs[i].cb = NULL;
