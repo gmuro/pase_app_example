@@ -165,18 +165,6 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
    int32_t i;
    int32_t ret = -1;
 
-   //Chip_GPIO_Init(LPC_GPIO_PORT);
-
-   /* Switches */
-   //Chip_SCU_PinMux(1,0,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[4], SW1 */
-   //Chip_SCU_PinMux(1,1,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[8], SW2 */
-   //Chip_SCU_PinMux(1,2,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[9], SW3 */
-   //Chip_SCU_PinMux(1,6,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO1[9], SW4 */
-
-   //Chip_GPIO_SetDir(LPC_GPIO_PORT, 0,(1<<4)|(1<<8)|(1<<9),0);
-   //Chip_GPIO_SetDir(LPC_GPIO_PORT, 1,(1<<9),0);
-
-
    for (i = 0 ; (i < MCU_GPIO_IN_EVENT_TOTAL) && (ret == -1) ; i++)
    {
       if (eventsInputs[i].cb == NULL)
