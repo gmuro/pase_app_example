@@ -89,15 +89,26 @@ extern void mcu_gpio_init(void)
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
                                   mcu_gpio_direction_enum dir)
 {
-   Chip_SCU_PinMux(p_gpio[id].p.port,
-                   p_gpio[id].p.pin,
-                   MD_PLN,
-                   p_gpio[id].modefunc);
+
+   if(dir == MCU_GPIO_DIRECTION_INPUT)
+   {
+	   Chip_SCU_PinMux(p_gpio[id].p.port,
+	                   p_gpio[id].p.pin,
+	                   MD_PUP|MD_EZI|MD_ZI,
+	                   p_gpio[id].modefunc);
+   }
+   else
+   {
+	   Chip_SCU_PinMux(p_gpio[id].p.port,
+	                   p_gpio[id].p.pin,
+	                   MD_PLN,
+	                   p_gpio[id].modefunc);
+   }
 
    Chip_GPIO_SetDir(LPC_GPIO_PORT,
                     p_gpio[id].gpio.port,
                     (1<<p_gpio[id].gpio.pin),
-                    (dir == MCU_GPIO_DIRECTION_OUTPUT));
+                    ((uint8_t)dir == MCU_GPIO_DIRECTION_OUTPUT));
 }
 
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
