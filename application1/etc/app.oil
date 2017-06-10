@@ -54,10 +54,6 @@ OSEK OSEK {
       MEMMAP = FALSE;
    };
 
-   RESOURCE = POSIXR;
-
-   EVENT = POSIXE;
-
    APPMODE = AppMode1;
 
    TASK InitTask {
@@ -69,8 +65,6 @@ OSEK OSEK {
       STACK = 512;
       TYPE = EXTENDED;
       SCHEDULE = NON;
-      RESOURCE = POSIXR;
-      EVENT = POSIXE;
    }
 
    TASK PeriodicTask {
@@ -79,8 +73,6 @@ OSEK OSEK {
       STACK = 512;
       TYPE = EXTENDED;
       SCHEDULE = NON;
-      RESOURCE = POSIXR;
-      EVENT = POSIXE;
    }
 
    ALARM ActivatePeriodicTask {
@@ -97,5 +89,4 @@ OSEK OSEK {
       TYPE = HARDWARE;
       COUNTER = HWCOUNTER0;
    };
-
 };
