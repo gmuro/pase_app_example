@@ -63,6 +63,8 @@ typedef enum
    MCU_GPIO_PIN_ID_105,
    MCU_GPIO_PIN_ID_38,
    MCU_GPIO_PIN_ID_42,
+   MCU_GPIO_PIN_ID_43,
+   MCU_GPIO_PIN_ID_49,
 }mcu_gpio_pinId_enum;
 
 typedef enum

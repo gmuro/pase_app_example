@@ -84,6 +84,8 @@ static const p_gpio_type p_gpio[] =
    {{2,11}, {1,11}, FUNC0},
    {{1,0}, {0,4}, FUNC0},
    {{1,1}, {0,8}, FUNC0},
+   {{1,2}, {0,9}, FUNC0},
+   {{1,6}, {1,9}, FUNC0},
 };
 
 static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
@@ -101,8 +103,9 @@ extern void mcu_gpio_init(void)
 {
    int32_t i;
 
-   Chip_GPIO_Init(LPC_GPIO_PORT);
    Chip_Clock_Enable(CLK_MX_GPIO);
+   Chip_GPIO_Init(LPC_GPIO_PORT);
+
    for (i = 0 ; i < MCU_GPIO_IN_EVENT_TOTAL ; i++)
    {
       eventsInputs[i].cb = NULL;
@@ -118,15 +121,26 @@ extern void actualizar_variable()
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
                                   mcu_gpio_direction_enum dir)
 {
-   Chip_SCU_PinMux(p_gpio[id].p.port,
-                   p_gpio[id].p.pin,
-                   MD_PLN,
-                   p_gpio[id].modefunc);
+
+   if(dir == MCU_GPIO_DIRECTION_INPUT)
+   {
+	   Chip_SCU_PinMux(p_gpio[id].p.port,
+	                   p_gpio[id].p.pin,
+	                   MD_PUP|MD_EZI|MD_ZI,
+	                   p_gpio[id].modefunc);
+   }
+   else
+   {
+	   Chip_SCU_PinMux(p_gpio[id].p.port,
+	                   p_gpio[id].p.pin,
+	                   MD_PLN,
+	                   p_gpio[id].modefunc);
+   }
 
    Chip_GPIO_SetDir(LPC_GPIO_PORT,
                     p_gpio[id].gpio.port,
                     (1<<p_gpio[id].gpio.pin),
-                    (dir == MCU_GPIO_DIRECTION_OUTPUT));
+                    ((uint8_t)dir == MCU_GPIO_DIRECTION_OUTPUT));
 }
 
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
@@ -151,6 +165,18 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
    int32_t i;
    int32_t ret = -1;
 
+   //Chip_GPIO_Init(LPC_GPIO_PORT);
+
+   /* Switches */
+   //Chip_SCU_PinMux(1,0,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[4], SW1 */
+   //Chip_SCU_PinMux(1,1,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[8], SW2 */
+   //Chip_SCU_PinMux(1,2,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[9], SW3 */
+   //Chip_SCU_PinMux(1,6,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO1[9], SW4 */
+
+   //Chip_GPIO_SetDir(LPC_GPIO_PORT, 0,(1<<4)|(1<<8)|(1<<9),0);
+   //Chip_GPIO_SetDir(LPC_GPIO_PORT, 1,(1<<9),0);
+
+
    for (i = 0 ; (i < MCU_GPIO_IN_EVENT_TOTAL) && (ret == -1) ; i++)
    {
       if (eventsInputs[i].cb == NULL)
@@ -162,54 +188,48 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
       }
    }
 
-   if (ret != -1)
+   /* Configure interrupt channel for the GPIO pin in SysCon block */
+   /*
+   Chip_SCU_GPIOIntPinSel(0,
+                          p_gpio[id].gpio.port,
+                          p_gpio[id].gpio.pin);
+   */
+
+   /* Test SW4 forzado */
+
+   Chip_PININT_Init(LPC_GPIO_PIN_INT);
+
+   Chip_SCU_GPIOIntPinSel(0, 1, 9);
+
+   /* Falling edge IRQ */
+   Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT, PININTCH0);
+
+   /* Configure channel interrupt as edge sensitive and falling edge
+      interrupt */
+   switch(evType)
    {
-      mcu_gpio_setDirection(id,
-                            MCU_GPIO_DIRECTION_INPUT);
-      /* Configure interrupt channel for the GPIO pin in SysCon block */
-      Chip_SCU_GPIOIntPinSel(0,
-                             p_gpio[id].gpio.port,
-                             p_gpio[id].gpio.pin);
-      /* Test SW4 forzado */
-      /*
-	  Chip_SCU_GPIOIntPinSel(0, 1, 9);
-      */
-
-      /* Configure channel interrupt as edge sensitive and falling edge
-         interrupt */
-      Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
-    		  PININTCH0);
-      Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT,
-    		  PININTCH0);
-      switch(evType)
-      {
-         case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
-            Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT,
-            		PININTCH0);
-            break;
-         case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
-            Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT,
-            		PININTCH0);
-            break;
-      }
-
-      /* Enable interrupt in the NVIC */
-      NVIC_ClearPendingIRQ((IRQn_Type)PININT_NVIC_NAME);
-      NVIC_EnableIRQ((IRQn_Type)PININT_NVIC_NAME);
+      case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
+         Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT, PININTCH0);
+         break;
+      case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
+         Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT, PININTCH0);
+         break;
    }
+
+   /* Enable interrupt in the NVIC */
+   NVIC_EnableIRQ(PIN_INT0_IRQn);
+
+   return ret;
 }
 
-ISR(GPIO0_IRQHandler)
+ISR(GPIOINTHandler0)
 {
-
-   //disable interrupts
-   NVIC_DisableIRQ(PININT_NVIC_NAME);
    //Clear interrupt
    Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
 		   PININTCH0);
+
    actualizar_variable();
-   //Enable interrupt
-   NVIC_EnableIRQ(PININT_NVIC_NAME);
+
    return;
 }
 

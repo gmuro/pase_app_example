@@ -60,6 +60,8 @@ static const mcu_gpio_pinId_enum switchMap[] =
 {
    MCU_GPIO_PIN_ID_38,
    MCU_GPIO_PIN_ID_42,
+   MCU_GPIO_PIN_ID_43,
+   MCU_GPIO_PIN_ID_49,
 };
 
 static const int8_t totalLeds = sizeof(ledMap) / sizeof(ledMap[0]);
@@ -89,12 +91,14 @@ extern void board_init(void)
    {
       mcu_gpio_setDirection(ledMap[i], MCU_GPIO_DIRECTION_OUTPUT);
    }
+
    for (i = 0 ; i < totalSwitches ; i++)
    {
       mcu_gpio_setDirection(switchMap[i], MCU_GPIO_DIRECTION_INPUT);
    }
+
    mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_38,
-                          MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
+		                  MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
                           callback_1);
 }
 
