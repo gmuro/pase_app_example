@@ -63,24 +63,24 @@ OSEK OSEK {
          APPMODE = AppMode1;
       };
       STACK = 512;
-      TYPE = EXTENDED;
+      TYPE = BASIC;
       SCHEDULE = NON;
    }
 
-   TASK LoopTask1 {
+   TASK Task1 {
       PRIORITY = 2;
       ACTIVATION = 1;
       STACK = 512;
-      TYPE = EXTENDED;
-      SCHEDULE = FULL;
+      TYPE = BASIC;
+      SCHEDULE = NON;
    }
 
-   TASK LoopTask2 {
+   TASK Task2 {
       PRIORITY = 2;
       ACTIVATION = 1;
       STACK = 512;
-      TYPE = EXTENDED;
-      SCHEDULE = FULL;
+      TYPE = BASIC;
+      SCHEDULE = NON;
    }
 
    ALARM RunCallBack10ms {
