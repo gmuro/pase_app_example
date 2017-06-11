@@ -56,8 +56,12 @@ extern "C" {
 /*==================[typedef]================================================*/
 typedef enum
 {
-   BOARD_LED_ID_YELLOW = 0,
-   BOARD_LED_ID_RED,
+   BOARD_LED_ID_0_R = 0,
+   BOARD_LED_ID_0_G,
+   BOARD_LED_ID_0_B,
+   BOARD_LED_ID_1,
+   BOARD_LED_ID_2,
+   BOARD_LED_ID_3,
 }board_ledId_enum;
 
 typedef enum

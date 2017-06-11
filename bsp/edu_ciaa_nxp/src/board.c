@@ -52,8 +52,12 @@
 /*==================[internal data declaration]==============================*/
 static const mcu_gpio_pinId_enum ledMap[] =
 {
+   MCU_GPIO_PIN_ID_75,
+   MCU_GPIO_PIN_ID_81,
+   MCU_GPIO_PIN_ID_84,
    MCU_GPIO_PIN_ID_104,
    MCU_GPIO_PIN_ID_105,
+   MCU_GPIO_PIN_ID_106,
 };
 
 static const mcu_gpio_pinId_enum switchMap[] =
