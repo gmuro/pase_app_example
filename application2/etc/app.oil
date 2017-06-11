@@ -72,7 +72,7 @@ OSEK OSEK {
       ACTIVATION = 1;
       STACK = 512;
       TYPE = BASIC;
-      SCHEDULE = NON;
+      SCHEDULE = FULL;
    }
 
    TASK Task2 {
@@ -80,6 +80,14 @@ OSEK OSEK {
       ACTIVATION = 1;
       STACK = 512;
       TYPE = BASIC;
+      SCHEDULE = FULL;
+   }
+
+   TASK PeriodicTask {
+      PRIORITY = 3;
+      ACTIVATION = 1;
+      STACK = 512;
+      TYPE = EXTENDED;
       SCHEDULE = NON;
    }
 
@@ -93,6 +101,18 @@ OSEK OSEK {
       ACTION = ALARMCALLBACK {
          ALARMCALLBACKNAME = CallBack10ms;
       };
+   }
+
+   ALARM ActivatePeriodicTask {
+      COUNTER = HardwareCounter;
+      AUTOSTART = TRUE {
+         ALARMTIME = 5;
+         CYCLETIME = 500;
+         APPMODE = AppMode1;
+      };
+      ACTION = ACTIVATETASK {
+         TASK = PeriodicTask;
+      }
    }
 
    COUNTER HardwareCounter {

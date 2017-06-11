@@ -122,9 +122,9 @@ TASK(InitTask)
 TASK(Task1)
 {
    if (timerUp10ms & 0b10000)
-      bsp_ledAction(BOARD_LED_ID_RED, BSP_LED_ACTION_ON);
+      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
    else
-      bsp_ledAction(BOARD_LED_ID_RED, BSP_LED_ACTION_OFF);
+      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
 
    ChainTask(Task2);
 }
@@ -132,9 +132,9 @@ TASK(Task1)
 TASK(Task2)
 {
    if (timerUp10ms & 0b100000)
-      bsp_ledAction(BOARD_LED_ID_YELLOW, BSP_LED_ACTION_ON);
+      bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_ON);
    else
-      bsp_ledAction(BOARD_LED_ID_YELLOW, BSP_LED_ACTION_OFF);
+      bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_OFF);
 
    ChainTask(Task1);
 }
@@ -142,6 +142,20 @@ TASK(Task2)
 ALARMCALLBACK(CallBack10ms)
 {
 	timerUp10ms++;
+}
+
+TASK(PeriodicTask)
+{
+   static char state = 0;
+
+   state = 1-state;
+
+   if (state)
+      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_ON);
+   else
+      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_OFF);
+
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */
