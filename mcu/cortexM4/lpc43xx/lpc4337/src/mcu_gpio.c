@@ -112,16 +112,9 @@ extern void mcu_gpio_init(void)
    }
 }
 
-extern void actualizar_variable()
-{
-   variable = variable +1;
-   return;
-}
-
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
                                   mcu_gpio_direction_enum dir)
 {
-
    if(dir == MCU_GPIO_DIRECTION_INPUT)
    {
 	   Chip_SCU_PinMux(p_gpio[id].p.port,
@@ -176,18 +169,12 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
       }
    }
 
+   Chip_PININT_Init(LPC_GPIO_PIN_INT);
+
    /* Configure interrupt channel for the GPIO pin in SysCon block */
-   /*
    Chip_SCU_GPIOIntPinSel(0,
                           p_gpio[id].gpio.port,
                           p_gpio[id].gpio.pin);
-   */
-
-   /* Test SW4 forzado */
-
-   Chip_PININT_Init(LPC_GPIO_PIN_INT);
-
-   Chip_SCU_GPIOIntPinSel(0, 1, 9);
 
    /* Falling edge IRQ */
    Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT, PININTCH0);
@@ -212,31 +199,19 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
 
 ISR(GPIOINTHandler0)
 {
-   //Clear interrupt
-   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT,
-		   PININTCH0);
-
-   actualizar_variable();
-
-   return;
-}
-
-/* TODO: isr del los pines */
-#if 0
-
-void nombre_de_isr(void)
-{
    mcu_gpio_pinId_enum idPin;
    mcu_gpio_eventTypeInput_enum evType;
+
+   /* Clear interrupt */
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH0);
 
    // determinar pin que interrumpio y guardarlo en idPin
    // determinar flanco y guardarlo en evType
 
-
    eventsInputs[idPin].cb(idPin, evType);
-}
 
-#endif
+   return;
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

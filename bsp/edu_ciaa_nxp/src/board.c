@@ -98,7 +98,7 @@ extern void board_init(void)
    }
 
    mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_38,
-		                  MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
+                          MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
                           callback_1);
 }
 
