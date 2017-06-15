@@ -206,7 +206,7 @@ ISR(GPIOINTHandler0)
    // determinar pin que interrumpio y guardarlo en idPin
    // determinar flanco y guardarlo en evType
 
-   eventsInputs[idPin].cb(idPin, evType);
+   //eventsInputs[idPin].cb(idPin, evType);
 
    return;
 }
