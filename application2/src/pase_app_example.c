@@ -46,8 +46,8 @@
 /*==================[inclusions]=============================================*/
 #include "os.h"
 #include "pase_app_example.h"
-#include "bsp.h"
 #include "stdint.h"
+#include "stdio.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -112,7 +112,7 @@ void ErrorHook(void)
  */
 TASK(InitTask)
 {
-   bsp_init();
+   printf("init task\n");
 
    ActivateTask(Task1);
 
@@ -121,20 +121,12 @@ TASK(InitTask)
 
 TASK(Task1)
 {
-   if (timerUp10ms & 0b10000)
-      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
-   else
-      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
 
    ChainTask(Task2);
 }
 
 TASK(Task2)
 {
-   if (timerUp10ms & 0b100000)
-      bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_ON);
-   else
-      bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_OFF);
 
    ChainTask(Task1);
 }
@@ -146,14 +138,11 @@ ALARMCALLBACK(CallBack10ms)
 
 TASK(PeriodicTask)
 {
-   static char state = 0;
+   static int32_t cont;
 
-   state = 1-state;
+   cont++;
 
-   if (state)
-      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_ON);
-   else
-      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_OFF);
+   printf("PeriodicTask %d\n", cont);
 
    TerminateTask();
 }

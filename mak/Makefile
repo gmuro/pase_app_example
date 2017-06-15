@@ -42,17 +42,6 @@ $(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)
 SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)src$(DS)*.c)
 INC_FILES            += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)inc
 
-$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)mcu$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)src
-SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)mcu$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)src$(DS)*.c)
-INC_FILES            += $(PROJECT_PATH)$(DS)mcu$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)inc
-
-$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)bsp$(DS)src
-$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)bsp$(DS)$(BOARD)$(DS)src
-SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)bsp$(DS)src$(DS)*.c)
-SRC_FILES            += $(wildcard $(PROJECT_PATH)$(DS)bsp$(DS)$(BOARD)$(DS)src$(DS)*.c)
-INC_FILES            += $(PROJECT_PATH)$(DS)bsp$(DS)inc
-INC_FILES            += $(PROJECT_PATH)$(DS)bsp$(DS)$(BOARD)$(DS)inc
-
 # configuration for OSEK-OS
 OIL_FILES            += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)etc$(DS)app.oil
 
