@@ -96,13 +96,6 @@ OSEK OSEK {
       MINCYCLE = 1;
       TYPE = HARDWARE;
       COUNTER = HWCOUNTER0;
-   }
-
-      ISR GPIOINTHandler0 {
-      INTERRUPT = GPIO0;
-	  CATEGORY = 2;
-	  PRIORITY = 0;
-   };  
-   
+   };    
 
 };
