@@ -94,6 +94,7 @@ static const p_gpio_type p_gpio[] =
 
 static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
 static volatile variable = 0;
+
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
@@ -212,7 +213,7 @@ ISR(GPIOINTHandler0)
    // determinar pin que interrumpio y guardarlo en idPin
    // determinar flanco y guardarlo en evType
 
-   //eventsInputs[idPin].cb(idPin, evType);
+   eventsInputs[0].cb(idPin, evType);
 
    return;
 }
