@@ -98,10 +98,6 @@ extern void board_init(void)
    {
       mcu_gpio_setDirection(switchMap[i], MCU_GPIO_DIRECTION_INPUT);
    }
-
-   mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_38,
-                          MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
-                          callback_1);
 }
 
 extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
