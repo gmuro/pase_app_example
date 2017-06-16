@@ -1,5 +1,4 @@
 /* Copyright 2017, Gustavo Muro
- * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -31,76 +30,34 @@
  *
  */
 
-#ifndef MCU_GPIO_H
-#define MCU_GPIO_H
-/** \brief Header para MCU
+#ifndef PASE_APP_EXAMPLE_H_
+#define PASE_APP_EXAMPLE_H_
+/** \brief PASE APP EXAMPLE
  **
- ** archivo de inicilización del microcontrolador
+ ** ejemplo de aplicación usando CIAA Firmware
  **
  **/
 
-/** \addtogroup PASE_APP_EXAMPLE
+/** \addtogroup
  ** @{ */
-/** \addtogroup MCU GPIO
+/** \addtogroup
+ ** @{ */
+/** \addtogroup
  ** @{ */
 
 /*==================[inclusions]=============================================*/
-#include "stdbool.h"
-#include "stdint.h"
-
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
 
-typedef enum
-{
-   MCU_GPIO_PIN_ID_75 = 0,
-   MCU_GPIO_PIN_ID_81,
-   MCU_GPIO_PIN_ID_84,
-   MCU_GPIO_PIN_ID_104,
-   MCU_GPIO_PIN_ID_105,
-   MCU_GPIO_PIN_ID_106,
-   MCU_GPIO_PIN_ID_38,
-   MCU_GPIO_PIN_ID_42,
-   MCU_GPIO_PIN_ID_43,
-   MCU_GPIO_PIN_ID_49,
-}mcu_gpio_pinId_enum;
-
-typedef enum
-{
-   MCU_GPIO_DIRECTION_INPUT = 0,
-   MCU_GPIO_DIRECTION_OUTPUT,
-}mcu_gpio_direction_enum;
-
-typedef enum
-{
-   MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE = 0,
-   MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE,
-}mcu_gpio_eventTypeInput_enum;
-
-typedef void (*mcu_gpio_eventInput_callBack_type)(mcu_gpio_pinId_enum id, mcu_gpio_eventTypeInput_enum evType);
-
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern void mcu_gpio_init(void);
-extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id, mcu_gpio_direction_enum dir);
-extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state);
-extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id);
-extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
-                                      mcu_gpio_eventTypeInput_enum evType,
-                                      mcu_gpio_eventInput_callBack_type cb);
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-}
-#endif
+
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef MCU_GPIO_H */
+#endif /* #ifndef PASE_APP_EXAMPLE_H_ */
 

@@ -78,6 +78,13 @@ static const int8_t totalSwitches = sizeof(switchMap) / sizeof(switchMap[0]);
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+void callback_1(mcu_gpio_pinId_enum id,
+                mcu_gpio_eventTypeInput_enum evType)
+{
+   //Dummy
+   return;
+}
+
 extern void board_init(void)
 {
    int8_t i;
@@ -86,10 +93,15 @@ extern void board_init(void)
    {
       mcu_gpio_setDirection(ledMap[i], MCU_GPIO_DIRECTION_OUTPUT);
    }
+
    for (i = 0 ; i < totalSwitches ; i++)
    {
       mcu_gpio_setDirection(switchMap[i], MCU_GPIO_DIRECTION_INPUT);
    }
+
+   mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_38,
+                          MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
+                          callback_1);
 }
 
 extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
