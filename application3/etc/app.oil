@@ -102,7 +102,5 @@ OSEK OSEK {
       INTERRUPT = GPIO0;
 	  CATEGORY = 2;
 	  PRIORITY = 0;
-   };  
-   
-
+   };
 };
