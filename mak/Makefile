@@ -58,7 +58,4 @@ OIL_FILES            += $(PROJECT_PATH)$(DS)application$(PASE_APP_SEL)$(DS)etc$(
 
 # Modules needed for this project
 MODS ?= modules$(DS)rtos	\
-		  modules$(DS)drivers\
-		  modules$(DS)posix  \
-		  modules$(DS)libs	\
-		  modules$(DS)ciaak
+		externals$(DS)drivers
