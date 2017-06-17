@@ -64,6 +64,8 @@ static const mcu_gpio_pinId_enum switchMap[] =
 {
    MCU_GPIO_PIN_ID_38,
    MCU_GPIO_PIN_ID_42,
+   MCU_GPIO_PIN_ID_43,
+   MCU_GPIO_PIN_ID_49,
 };
 
 static const int8_t totalLeds = sizeof(ledMap) / sizeof(ledMap[0]);

@@ -74,6 +74,8 @@ typedef enum
 {
    BOARD_TEC_ID_1 = 0,
    BOARD_TEC_ID_2,
+   BOARD_TEC_ID_3,
+   BOARD_TEC_ID_4,
 }board_switchId_enum;
 
 typedef enum
