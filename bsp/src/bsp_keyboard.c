@@ -105,7 +105,7 @@ extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
 
 extern void bsp_keyboard_task(void)
 {
-
+   time_counter++;
 }
 
 /** @} doxygen end group definition */
