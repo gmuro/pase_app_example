@@ -97,7 +97,7 @@ board_switchId_enum check_pin_change(void)
 
 extern int32_t bsp_keyboardGet(void)
 {
-   return -1;
+   return check_pin_change();
 }
 
 extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
