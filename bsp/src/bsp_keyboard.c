@@ -31,9 +31,7 @@
  *
  */
 
-#ifndef BSP_H
-#define BSP_H
-/** \brief Header para MCU
+/** \brief source para MCU
  **
  ** archivo de inicilización del microcontrolador
  **
@@ -48,33 +46,43 @@
 #include "board.h"
 #include "bsp_keyboard.h"
 
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-extern "C" {
+/*==================[macros and definitions]=================================*/
+
+#ifndef BOARD_TEC_ID_TOTAL
+#define BOARD_TEC_ID_TOTAL    0
 #endif
 
-/*==================[macros]=================================================*/
+/*==================[internal data declaration]==============================*/
 
-/*==================[typedef]================================================*/
-typedef enum
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+extern void bsp_keyboardInit(void)
 {
-   BSP_LED_ACTION_OFF = 0,
-   BSP_LED_ACTION_ON,
-   BSP_LED_ACTION_TOGGLE,
 
-}bsp_ledAction_enum;
-/*==================[external data declaration]==============================*/
-
-/*==================[external functions declaration]=========================*/
-extern void bsp_init(void);
-extern void bsp_ledAction(board_ledId_enum id, bsp_ledAction_enum action);
-
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
 }
-#endif
+
+extern int32_t bsp_keyboardGet(void)
+{
+   return -1;
+}
+
+extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
+{
+   return false;
+}
+
+extern void bsp_keyboard_task(void)
+{
+
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef BSP_H */
-
