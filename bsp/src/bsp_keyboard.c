@@ -64,6 +64,14 @@ static board_switchState_enum keys_states[BOARD_TEC_ID_TOTAL];
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+void init_keys_states(void)
+{
+   uint8_t i;
+   for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
+   {
+      keys_states[i] = BOARD_TEC_NON_PRESSED;
+   }
+}
 extern void bsp_keyboardInit(void)
 {
 
