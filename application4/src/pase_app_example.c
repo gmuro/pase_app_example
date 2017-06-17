@@ -62,9 +62,14 @@
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
-static void eventInput_callBack(mcu_gpio_pinId_enum id, mcu_gpio_eventTypeInput_enum evType)
+static void eventInput1_callBack(mcu_gpio_pinId_enum id, mcu_gpio_eventTypeInput_enum evType)
 {
-   ActivateTask(InputEvTask);
+   ActivateTask(InputEvTask1);
+}
+
+static void eventInput2_callBack(mcu_gpio_pinId_enum id, mcu_gpio_eventTypeInput_enum evType)
+{
+   ActivateTask(InputEvTask2);
 }
 
 /*==================[external functions definition]==========================*/
@@ -121,18 +126,30 @@ TASK(InitTask)
 
    mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_38,
          MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE,
-         eventInput_callBack);
+         eventInput1_callBack);
+
+   mcu_gpio_setEventInput(MCU_GPIO_PIN_ID_42,
+         MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE,
+         eventInput2_callBack);
 
    TerminateTask();
 }
 
-/** \brief Periodic Task
- *
- * This task is started automatically every time that the alarm
- * ActivatePeriodicTask expires.
- *
- */
-TASK(InputEvTask)
+TASK(InputEvTask1)
+{
+   static char state = 0;
+
+   state = 1-state;
+
+   if (state)
+      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
+   else
+      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
+
+   TerminateTask();
+}
+
+TASK(InputEvTask2)
 {
    static char state = 0;
 
