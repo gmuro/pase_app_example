@@ -93,7 +93,6 @@ static const p_gpio_type p_gpio[] =
 };
 
 static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
-static volatile variable = 0;
 
 /*==================[internal functions declaration]=========================*/
 
