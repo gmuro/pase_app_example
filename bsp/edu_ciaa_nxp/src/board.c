@@ -78,12 +78,6 @@ static const int8_t totalSwitches = sizeof(switchMap) / sizeof(switchMap[0]);
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void callback_1(mcu_gpio_pinId_enum id,
-                mcu_gpio_eventTypeInput_enum evType)
-{
-   //Dummy
-   return;
-}
 
 extern void board_init(void)
 {
