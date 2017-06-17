@@ -102,7 +102,29 @@ extern int32_t bsp_keyboardGet(void)
 
 extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
 {
-   return false;
+   //Time is expressed as a mS value. time_counter is how many times
+   //bsp_keyboard_task has been called each KEYBOARD_TASK_TIME_MS mS.
+   int32_t end = (time_counter * KEYBOARD_TASK_TIME_MS) + time;
+
+   //Local_counter is used to not query GPIO at MCU_CLK
+   int32_t local_counter = time_counter;
+
+   board_switchState_enum init_state = board_switchGet(id);
+   board_switchState_enum next_state = init_state;
+
+   while(time_counter < end)
+   {
+      if(time_counter != local_counter)
+      {
+         next_state = board_switchGet(id);
+         local_counter = time_counter;
+         if(init_state != next_state)
+         {
+            return false;
+         }
+      }
+   }
+   return true;
 }
 
 extern void bsp_keyboard_task(void)
