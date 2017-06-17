@@ -74,6 +74,8 @@ void init_keys_states(void)
 }
 extern void bsp_keyboardInit(void)
 {
+   init_keys_states();
+}
 
 board_switchId_enum check_pin_change(void)
 {
