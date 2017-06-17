@@ -57,7 +57,8 @@
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
-
+static uint32_t time_counter = 0;
+static board_switchState_enum keys_states[BOARD_TEC_ID_TOTAL];
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
