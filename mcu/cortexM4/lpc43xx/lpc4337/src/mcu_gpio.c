@@ -49,11 +49,9 @@
 #include "os.h"
 
 /*==================[macros and definitions]=================================*/
-/* PININT index used for GPIO mapping */
-#define PININT_INDEX 0
-/* GPIO interrupt NVIC interrupt name */
-#define PININT_NVIC_NAME    PIN_INT0_IRQn
 
+/** \brief cantidad de callback que se pueden registrar */
+#define MCU_GPIO_IN_EVENT_TOTAL     8
 
 /** \brief Dio Type */
 typedef struct
@@ -93,6 +91,18 @@ static const p_gpio_type p_gpio[] =
 };
 
 static eventsInputs_type eventsInputs[MCU_GPIO_IN_EVENT_TOTAL];
+
+static const LPC43XX_IRQn_Type pinIntIrqMap[] =
+{
+   PIN_INT0_IRQn,
+   PIN_INT1_IRQn,
+   PIN_INT2_IRQn,
+   PIN_INT3_IRQn,
+   PIN_INT4_IRQn,
+   PIN_INT5_IRQn,
+   PIN_INT6_IRQn,
+   PIN_INT7_IRQn,
+};
 
 /*==================[internal functions declaration]=========================*/
 
@@ -169,52 +179,93 @@ extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
          eventsInputs[i].cb = cb;
          eventsInputs[i].evType = evType;
          eventsInputs[i].pinId = id;
-         ret = 0;
+         ret = i;
       }
    }
 
-   Chip_PININT_Init(LPC_GPIO_PIN_INT);
-
-   /* Configure interrupt channel for the GPIO pin in SysCon block */
-   Chip_SCU_GPIOIntPinSel(0,
-                          p_gpio[id].gpio.port,
-                          p_gpio[id].gpio.pin);
-
-   /* Falling edge IRQ */
-   Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT, PININTCH0);
-
-   /* Configure channel interrupt as edge sensitive and falling edge
-      interrupt */
-   switch(evType)
+   if (ret >= 0)
    {
-      case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
-         Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT, PININTCH0);
-         break;
-      case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
-         Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT, PININTCH0);
-         break;
-   }
+      Chip_PININT_Init(LPC_GPIO_PIN_INT);
+      /* Configure interrupt channel for the GPIO pin in SysCon block */
+      Chip_SCU_GPIOIntPinSel(ret,
+                             p_gpio[id].gpio.port,
+                             p_gpio[id].gpio.pin);
 
-   /* Enable interrupt in the NVIC */
-   NVIC_EnableIRQ(PIN_INT0_IRQn);
+      /* Configure channel interrupt as edge sensitive and falling edge
+         interrupt */
+      switch(evType)
+      {
+         case MCU_GPIO_EVENT_TYPE_INPUT_FALLING_EDGE:
+            /* Configure the pins as edge sensitive in Pin interrupt block */
+            Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT, PININTCH(ret));
+            Chip_PININT_EnableIntLow(LPC_GPIO_PIN_INT, PININTCH(ret));
+            break;
+
+         case MCU_GPIO_EVENT_TYPE_INPUT_RISING_EDGE:
+            /* Configure the pins as edge sensitive in Pin interrupt block */
+            Chip_PININT_SetPinModeEdge(LPC_GPIO_PIN_INT, PININTCH(ret));
+            Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT, PININTCH(ret));
+            break;
+
+         /* TODO: interrupt for low or high level */
+
+         default:
+            break;
+      }
+
+      /* Enable interrupt in the NVIC */
+      NVIC_EnableIRQ(pinIntIrqMap[ret]);
+   }
 
    return ret;
 }
 
 ISR(GPIOINTHandler0)
 {
-   mcu_gpio_pinId_enum idPin;
-   mcu_gpio_eventTypeInput_enum evType;
-
-   /* Clear interrupt */
    Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH0);
+   eventsInputs[0].cb(eventsInputs[0].pinId, eventsInputs[0].evType);
+}
 
-   // determinar pin que interrumpio y guardarlo en idPin
-   // determinar flanco y guardarlo en evType
+ISR(GPIOINTHandler1)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH1);
+   eventsInputs[1].cb(eventsInputs[1].pinId, eventsInputs[1].evType);
+}
 
-   eventsInputs[0].cb(idPin, evType);
+ISR(GPIOINTHandler2)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH2);
+   eventsInputs[2].cb(eventsInputs[2].pinId, eventsInputs[2].evType);
+}
 
-   return;
+ISR(GPIOINTHandler3)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH3);
+   eventsInputs[3].cb(eventsInputs[3].pinId, eventsInputs[3].evType);
+}
+
+ISR(GPIOINTHandler4)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH4);
+   eventsInputs[4].cb(eventsInputs[4].pinId, eventsInputs[4].evType);
+}
+
+ISR(GPIOINTHandler5)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH5);
+   eventsInputs[5].cb(eventsInputs[5].pinId, eventsInputs[5].evType);
+}
+
+ISR(GPIOINTHandler6)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH6);
+   eventsInputs[6].cb(eventsInputs[6].pinId, eventsInputs[6].evType);
+}
+
+ISR(GPIOINTHandler7)
+{
+   Chip_PININT_ClearIntStatus(LPC_GPIO_PIN_INT, PININTCH7);
+   eventsInputs[7].cb(eventsInputs[7].pinId, eventsInputs[7].evType);
 }
 
 /** @} doxygen end group definition */
