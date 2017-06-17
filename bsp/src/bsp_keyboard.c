@@ -75,6 +75,22 @@ void init_keys_states(void)
 extern void bsp_keyboardInit(void)
 {
 
+board_switchId_enum check_pin_change(void)
+{
+   uint8_t i = 0;
+   board_switchId_enum key_id = -1;
+   board_switchState_enum state;
+   for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
+   {
+      state = board_switchGet(i);
+      if(state != keys_states[i])
+      {
+         keys_states[i] = state;
+         key_id = i;
+         break;
+      }
+   }
+   return key_id;
 }
 
 extern int32_t bsp_keyboardGet(void)
