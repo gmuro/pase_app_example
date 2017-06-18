@@ -113,10 +113,10 @@ board_switchId_enum check_pin_change(void)
    board_switchState_enum state;
    for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
    {
-      state = board_switchGet(i);
-      if(state != keys_states[i])
+      state = bsp_readKey(i);
+      if(state != prev_keys_states[i])
       {
-         keys_states[i] = state;
+         prev_keys_states[i] = state;
          key_id = i;
          break;
       }
