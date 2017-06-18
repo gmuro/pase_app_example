@@ -89,7 +89,10 @@ void init_keys_arrays(void)
    uint8_t i;
    for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
    {
-      keys_states[i] = BOARD_TEC_NON_PRESSED;
+      keys_states[i].tmp_state = BOARD_TEC_NON_PRESSED;
+      keys_states[i].state = BOARD_TEC_NON_PRESSED;
+      prev_keys_states[i] = BOARD_TEC_NON_PRESSED;
+      keys_states[i].counter = 0;
       soft_timers[i].enable = false;
    }
 }
