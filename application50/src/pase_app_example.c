@@ -112,7 +112,7 @@ TASK(InitTask)
 {
    bsp_init();
 
-   SetRelAlarm(ActivateKeyboardTask, 10, 10);
+   SetRelAlarm(ActivateKeyboardTask, 10, KEYBOARD_TASK_TIME_MS);
    SetRelAlarm(ActivateUserTask, 50, 50);
 
    TerminateTask();
@@ -125,14 +125,27 @@ TASK(UserTask)
    key = bsp_keyboardGet();
 
    if (key == BOARD_TEC_ID_1)
-   {
       bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
-   }
 
    if (key == BOARD_TEC_ID_2)
-   {
       bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
+
+   if (key == BOARD_TEC_ID_3)
+   {
+      static char state = 0;
+
+      state = 1-state;
+
+      if (state)
+         bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_ON);
+      else
+         bsp_ledAction(BOARD_LED_ID_2, BSP_LED_ACTION_OFF);
    }
+
+   if (bsp_keyboardGetPressed(BOARD_TEC_ID_4, 20))
+      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_ON);
+   else
+      bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_OFF);
 
    TerminateTask();
 }
