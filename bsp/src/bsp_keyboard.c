@@ -48,11 +48,30 @@
 
 /*==================[macros and definitions]=================================*/
 
-#ifndef BOARD_TEC_ID_TOTAL
-#define BOARD_TEC_ID_TOTAL    0
-#endif
+#define TIME_DEBOAUNCE_ACT       20
+#define TIME_DEBOAUNCE_DEACT     20
+
+#define convertTimeMsToInternalTime(time)    (time/KEYBOARD_TASK_TIME_MS)
+
+typedef enum
+{
+   KEY_STATE_WAIT_PRESS = 0,
+   KEY_STATE_DEBOUNCE_ACT,
+   KEY_STATE_WAIT_NO_PRESS,
+   KEY_STATE_DEBOUNCE_DEACT,
+}stateKey_enum;
+
+typedef struct
+{
+   stateKey_enum state;
+   int16_t timerDebounce;
+   int16_t timerUp;
+}varsKey_type;
 
 /*==================[internal data declaration]==============================*/
+static varsKey_type varsKey[BOARD_TEC_ID_TOTAL];
+static int32_t idKeyPressed;
+static int16_t prescaler100ms;
 
 /*==================[internal functions declaration]=========================*/
 
@@ -65,22 +84,107 @@
 /*==================[external functions definition]==========================*/
 extern void bsp_keyboardInit(void)
 {
-
+   prescaler100ms = 0;
+   idKeyPressed = -1;
 }
 
 extern int32_t bsp_keyboardGet(void)
 {
-   return -1;
+   int32_t ret;
+
+   ret = idKeyPressed;
+
+   idKeyPressed = -1;
+
+   return ret;
 }
 
-extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
+extern bool bsp_keyboardGetPressed(int32_t id, int16_t time)
 {
-   return false;
+   bool ret = false;
+
+   if (varsKey[id].timerUp >= time)
+      ret = true;
+
+   return ret;
 }
 
 extern void bsp_keyboard_task(void)
 {
+   int32_t i;
 
+   if (prescaler100ms)
+      prescaler100ms--;
+   else
+      prescaler100ms = convertTimeMsToInternalTime(100);
+
+   for (i = 0 ; i < BOARD_TEC_ID_TOTAL ; i++)
+   {
+      switch (varsKey[i].state)
+      {
+         case KEY_STATE_WAIT_PRESS:
+            if (board_switchGet(i) == BOARD_TEC_PRESSED)
+            {
+               varsKey[i].timerDebounce = convertTimeMsToInternalTime(TIME_DEBOAUNCE_ACT);
+               varsKey[i].state = KEY_STATE_DEBOUNCE_ACT;
+            }
+            break;
+
+         case KEY_STATE_DEBOUNCE_ACT:
+            if (board_switchGet(i) == BOARD_TEC_NON_PRESSED)
+            {
+               varsKey[i].state = KEY_STATE_WAIT_PRESS;
+            }
+            else if (varsKey[i].timerDebounce)
+            {
+               varsKey[i].timerDebounce--;
+            }
+            else
+            {
+               idKeyPressed = BOARD_TEC_ID_1+i;
+               varsKey[i].timerUp = 0;
+               varsKey[i].state = KEY_STATE_WAIT_NO_PRESS;
+            }
+            break;
+
+         case KEY_STATE_WAIT_NO_PRESS:
+            if (board_switchGet(i) == BOARD_TEC_NON_PRESSED)
+            {
+               varsKey[i].timerDebounce = convertTimeMsToInternalTime(TIME_DEBOAUNCE_DEACT);
+               varsKey[i].state = KEY_STATE_DEBOUNCE_DEACT;
+            }
+            break;
+
+         case KEY_STATE_DEBOUNCE_DEACT:
+            if (board_switchGet(i) == BOARD_TEC_PRESSED)
+            {
+               varsKey[i].state = KEY_STATE_WAIT_NO_PRESS;
+            }
+            else if (varsKey[i].timerDebounce)
+            {
+               varsKey[i].timerDebounce--;
+            }
+            else
+            {
+               varsKey[i].state = KEY_STATE_WAIT_PRESS;
+            }
+            break;
+
+         default:
+            varsKey[i].state = KEY_STATE_WAIT_PRESS;
+            break;
+      }
+
+      if (varsKey[i].state == KEY_STATE_WAIT_NO_PRESS)
+      {
+         if ((varsKey[i].timerUp < 9999) && (prescaler100ms == 0))
+            varsKey[i].timerUp++;
+      }
+      else
+      {
+         varsKey[i].timerUp = 0;
+      }
+   }
 }
 
 /** @} doxygen end group definition */

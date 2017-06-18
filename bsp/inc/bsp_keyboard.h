@@ -54,6 +54,7 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
+#define KEYBOARD_TASK_TIME_MS    2
 
 /*==================[typedef]================================================*/
 
@@ -79,13 +80,13 @@ extern int32_t bsp_keyboardGet(void);
  **
  ** \param[in] id identificación de tecla.
  ** \param[in] time tiempo que debe estar presionada para retornar true
+ **            en décimas de segundo
  ** \return    true si estuvo presionada un tiempo mayor o igual al indicado
  **            de lo contrario devuelve false.
  **/
-extern bool bsp_keyboardGetPressed(int32_t id, int32_t time);
+extern bool bsp_keyboardGetPressed(int32_t id, int16_t time);
 
 /** \brief función para ejecutar tareas del módulo keyboard
- **        Esta función se debe llamar cada 10 ms
  **
  **/
 extern void bsp_keyboard_task(void);
