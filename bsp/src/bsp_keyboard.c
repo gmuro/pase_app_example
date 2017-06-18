@@ -84,6 +84,15 @@ static int16_t prescaler100ms;
 /*==================[external functions definition]==========================*/
 extern void bsp_keyboardInit(void)
 {
+   int32_t i;
+
+   for (i = 0 ; i < BOARD_TEC_ID_TOTAL ; i++)
+   {
+      varsKey[i].state = KEY_STATE_WAIT_PRESS;
+      varsKey[i].timerDebounce = 0;
+      varsKey[i].timerUp = 0;
+   }
+
    prescaler100ms = 0;
    idKeyPressed = -1;
 }
