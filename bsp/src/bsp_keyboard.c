@@ -135,14 +135,14 @@ extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
    //Local_counter is used to not query GPIO at MCU_CLK
    int32_t local_counter = time_counter;
 
-   board_switchState_enum init_state = board_switchGet(id);
+   board_switchState_enum init_state = bsp_readKey(id);
    board_switchState_enum next_state = init_state;
    bool ret = true;
    while(!is_timer_finish(id))
    {
       if(time_counter != local_counter)
       {
-         next_state = board_switchGet(id);
+         next_state = bsp_readKey(id);
          local_counter = time_counter;
          if(init_state != next_state)
          {
