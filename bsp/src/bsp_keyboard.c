@@ -58,6 +58,8 @@
 
 /*==================[internal data definition]===============================*/
 static uint32_t time_counter = 0;
+static bsp_switchState_t keys_states[BOARD_TEC_ID_TOTAL];
+static board_switchState_enum prev_keys_states[BOARD_TEC_ID_TOTAL];
 static soft_timer_t soft_timers[BOARD_TEC_ID_TOTAL];
 
 /*==================[external data definition]===============================*/

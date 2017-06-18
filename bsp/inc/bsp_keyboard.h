@@ -64,6 +64,12 @@ typedef struct
    bool enable;
 }soft_timer_t;
 
+typedef struct
+{
+   uint8_t counter;
+   board_switchState_enum state;
+   board_switchState_enum tmp_state;
+}bsp_switchState_t;
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
