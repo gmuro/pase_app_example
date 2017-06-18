@@ -129,17 +129,14 @@ extern int32_t bsp_keyboardGet(void)
 
 extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
 {
-   //Time is expressed as a mS value. time_counter is how many times
-   //bsp_keyboard_task has been called each KEYBOARD_TASK_TIME_MS mS.
-   int32_t end = (time_counter * KEYBOARD_TASK_TIME_MS) + time;
-
+   start_soft_timer(id, time);
    //Local_counter is used to not query GPIO at MCU_CLK
    int32_t local_counter = time_counter;
 
    board_switchState_enum init_state = board_switchGet(id);
    board_switchState_enum next_state = init_state;
-
-   while(time_counter < end)
+   bool ret = true;
+   while(!is_timer_finish(id))
    {
       if(time_counter != local_counter)
       {
@@ -147,16 +144,27 @@ extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
          local_counter = time_counter;
          if(init_state != next_state)
          {
-            return false;
+            ret = false;
+            break;
          }
       }
    }
-   return true;
+   stop_soft_timer(id);
+   return ret;
 }
 
 extern void bsp_keyboard_task(void)
 {
+   uint8_t i;
+
    time_counter++;
+   for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
+   {
+      if(soft_timers[i].enable)
+      {
+         soft_timers[i].counter++;
+      }
+   }
 }
 
 /** @} doxygen end group definition */
