@@ -103,6 +103,11 @@ extern bool bsp_keyboardGetPressed(int32_t id, int32_t time);
  **/
 extern void bsp_keyboard_task(void);
 
+/** \brief Leer estado de tecla despues del filtro antirebote.
+ **
+ **
+ **/
+extern board_switchState_enum bsp_readKey(int32_t id);
 /*==================[cplusplus]==============================================*/
 #ifdef __cplusplus
 }
