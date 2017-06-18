@@ -58,14 +58,6 @@
 
 /*==================[internal data definition]===============================*/
 static uint32_t time_counter = 0;
-static board_switchState_enum keys_states[BOARD_TEC_ID_TOTAL];
-typedef struct
-{
-   int32_t counter;
-   int32_t time;
-   bool enable;
-}soft_timer_t;
-
 static soft_timer_t soft_timers[BOARD_TEC_ID_TOTAL];
 
 /*==================[external data definition]===============================*/

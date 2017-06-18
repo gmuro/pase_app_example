@@ -57,6 +57,12 @@ extern "C" {
 #define KEYBOARD_TASK_TIME_MS 1
 #define KEYB_SAMPLES 10
 /*==================[typedef]================================================*/
+typedef struct
+{
+   int32_t counter;
+   int32_t time;
+   bool enable;
+}soft_timer_t;
 
 /*==================[external data declaration]==============================*/
 
