@@ -153,10 +153,24 @@ extern bool bsp_keyboardGetPressed(int32_t id, int32_t time)
 extern void bsp_keyboard_task(void)
 {
    uint8_t i;
+   board_switchState_enum state;
 
    time_counter++;
    for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
    {
+//TODO: Create read key function at board layer
+//      state = board_switchGet(i);
+      if(state != keys_states[i].tmp_state)
+      {
+         keys_states[i].counter = 0;
+         keys_states[i].tmp_state = state;
+      }
+      keys_states[i].counter++;
+      if(keys_states[i].counter > KEYB_SAMPLES)
+      {
+         keys_states[i].state = keys_states[i].tmp_state;
+      }
+
       if(soft_timers[i].enable)
       {
          soft_timers[i].counter++;
