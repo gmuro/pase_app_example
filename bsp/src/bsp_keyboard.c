@@ -101,6 +101,11 @@ extern void bsp_keyboardInit(void)
    init_keys_arrays();
 }
 
+extern board_switchState_enum bsp_readKey(int32_t id)
+{
+   return keys_states[id].state;
+}
+
 board_switchId_enum check_pin_change(void)
 {
    uint8_t i = 0;
