@@ -45,7 +45,7 @@
 /*==================[inclusions]=============================================*/
 #include "board.h"
 #include "bsp_keyboard.h"
-
+#include "stdint.h"
 /*==================[macros and definitions]=================================*/
 
 #ifndef BOARD_TEC_ID_TOTAL
@@ -59,22 +59,49 @@
 /*==================[internal data definition]===============================*/
 static uint32_t time_counter = 0;
 static board_switchState_enum keys_states[BOARD_TEC_ID_TOTAL];
+typedef struct
+{
+   int32_t counter;
+   int32_t time;
+   bool enable;
+}soft_timer_t;
+
+static soft_timer_t soft_timers[BOARD_TEC_ID_TOTAL];
+
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void init_keys_states(void)
+void start_soft_timer(int32_t id, int32_t time)
+{
+   soft_timers[id].counter = 0;
+   soft_timers[id].time = (time/KEYBOARD_TASK_TIME_MS) + 1;
+   soft_timers[id].enable = true;
+}
+
+void stop_soft_timer(int32_t id)
+{
+   soft_timers[id].enable = false;
+}
+
+bool is_timer_finish(int32_t id)
+{
+   return ((soft_timers[id].counter - soft_timers[id].time) > 0);
+}
+
+void init_keys_arrays(void)
 {
    uint8_t i;
    for(i = 0; i < BOARD_TEC_ID_TOTAL;i++)
    {
       keys_states[i] = BOARD_TEC_NON_PRESSED;
+      soft_timers[i].enable = false;
    }
 }
 extern void bsp_keyboardInit(void)
 {
-   init_keys_states();
+   init_keys_arrays();
 }
 
 board_switchId_enum check_pin_change(void)
