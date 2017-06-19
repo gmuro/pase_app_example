@@ -1,5 +1,4 @@
 /* Copyright 2017, Gustavo Muro
- * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -31,50 +30,34 @@
  *
  */
 
-#ifndef BSP_H
-#define BSP_H
-/** \brief Header para MCU
+#ifndef PASE_APP_EXAMPLE_H_
+#define PASE_APP_EXAMPLE_H_
+/** \brief PASE APP EXAMPLE
  **
- ** archivo de inicilización del microcontrolador
+ ** ejemplo de aplicación usando CIAA Firmware
  **
  **/
 
-/** \addtogroup PASE_APP_EXAMPLE
+/** \addtogroup
  ** @{ */
-/** \addtogroup MCU
+/** \addtogroup
+ ** @{ */
+/** \addtogroup
  ** @{ */
 
 /*==================[inclusions]=============================================*/
-#include "board.h"
-#include "bsp_keyboard.h"
-
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
-typedef enum
-{
-   BSP_LED_ACTION_OFF = 0,
-   BSP_LED_ACTION_ON,
-   BSP_LED_ACTION_TOGGLE,
 
-}bsp_ledAction_enum;
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern void bsp_init(void);
-extern void bsp_ledAction(board_ledId_enum id, bsp_ledAction_enum action);
 
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-}
-#endif
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef BSP_H */
+#endif /* #ifndef PASE_APP_EXAMPLE_H_ */
 
