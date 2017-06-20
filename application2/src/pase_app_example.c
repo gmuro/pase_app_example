@@ -146,7 +146,7 @@ ALARMCALLBACK(CallBack10ms)
 
 TASK(PeriodicTask)
 {
-   bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_TOGGLE);
+   bsp_ledAction(BOARD_LED_ID_3, BSP_LED_ACTION_TOGGLE);
 
    TerminateTask();
 }
