@@ -165,7 +165,7 @@ extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
                          state);
 }
 
-extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id)
+extern bool mcu_gpio_readPin(mcu_gpio_pinId_enum id)
 {
    return Chip_GPIO_GetPinState(LPC_GPIO_PORT,
                                 p_gpio[id].gpio.port,
