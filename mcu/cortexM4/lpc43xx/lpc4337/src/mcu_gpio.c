@@ -140,7 +140,7 @@ extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
    {
 	   Chip_SCU_PinMux(p_gpio[id].p.port,
 	                   p_gpio[id].p.pin,
-	                   MD_PLN,
+	                   MD_PLN | MD_EZI,
 	                   p_gpio[id].modefunc);
    }
 
