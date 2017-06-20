@@ -96,6 +96,11 @@ extern void board_init(void)
    }
 }
 
+extern void board_ledToggle(board_ledId_enum id)
+{
+   mcu_gpio_toggleOut(ledMap[id]);
+}
+
 extern void board_ledSet(board_ledId_enum id, board_ledState_enum state)
 {
    mcu_gpio_setOut(ledMap[id], state == BOARD_LED_STATE_ON);
