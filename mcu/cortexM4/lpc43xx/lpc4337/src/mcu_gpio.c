@@ -150,6 +150,13 @@ extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id,
                     ((uint8_t)dir == MCU_GPIO_DIRECTION_OUTPUT));
 }
 
+extern void mcu_gpio_toggleOut(mcu_gpio_pinId_enum id)
+{
+   Chip_GPIO_SetPortToggle(LPC_GPIO_PORT,
+                           p_gpio[id].gpio.port,
+                           ((uint32_t)1) << (p_gpio[id].gpio.pin));
+}
+
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state)
 {
    Chip_GPIO_SetPinState(LPC_GPIO_PORT,

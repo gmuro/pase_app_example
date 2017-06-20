@@ -81,6 +81,7 @@ extern void bsp_ledAction(board_ledId_enum id, bsp_ledAction_enum action)
          break;
 
       case BSP_LED_ACTION_TOGGLE:
+         board_ledToggle(id);
          break;
    }
 }

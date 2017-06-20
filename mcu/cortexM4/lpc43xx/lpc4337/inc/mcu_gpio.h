@@ -91,6 +91,7 @@ typedef void (*mcu_gpio_eventInput_callBack_type)(mcu_gpio_pinId_enum id, mcu_gp
 extern void mcu_gpio_init(void);
 extern void mcu_gpio_setDirection(mcu_gpio_pinId_enum id, mcu_gpio_direction_enum dir);
 extern void mcu_gpio_setOut(mcu_gpio_pinId_enum id, bool state);
+extern void mcu_gpio_toggleOut(mcu_gpio_pinId_enum id);
 extern bool mcu_gpio_readInput(mcu_gpio_pinId_enum id);
 extern int32_t mcu_gpio_setEventInput(mcu_gpio_pinId_enum id,
                                       mcu_gpio_eventTypeInput_enum evType,

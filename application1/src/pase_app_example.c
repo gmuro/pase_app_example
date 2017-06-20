@@ -127,14 +127,7 @@ TASK(InitTask)
  */
 TASK(PeriodicTask)
 {
-   static char state = 0;
-
-   state = 1-state;
-
-   if (state)
-      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
-   else
-      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
+   bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_TOGGLE);
 
    TerminateTask();
 }
