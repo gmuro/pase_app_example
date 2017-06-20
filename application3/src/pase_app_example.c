@@ -122,19 +122,11 @@ TASK(InitTask)
 
 TASK(LoopTask)
 {
-   static char state = 0;
-
    while (1)
    {
       WaitEvent(evBlink);
       ClearEvent(evBlink);
-
-      state = 1-state;
-
-      if (state)
-         bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_ON);
-      else
-         bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_OFF);
+      bsp_ledAction(BOARD_LED_ID_1, BSP_LED_ACTION_TOGGLE);
    }
 
    TerminateTask();
