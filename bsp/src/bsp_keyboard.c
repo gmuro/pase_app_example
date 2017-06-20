@@ -186,7 +186,7 @@ extern void bsp_keyboard_task(void)
 
       if (varsKey[i].state == KEY_STATE_WAIT_NO_PRESS)
       {
-         if ((varsKey[i].timerUp < 9999) && (prescaler100ms == 0))
+         if ((varsKey[i].timerUp < KEYBOARD_MAX_TIME_PRESSED_DS) && (prescaler100ms == 0))
             varsKey[i].timerUp++;
       }
       else
