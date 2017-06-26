@@ -48,7 +48,7 @@
 /*==================[inclusions]=============================================*/
 #include "chip.h"
 #include "os.h"
-
+#include "mcu.h"
 /*==================[macros and definitions]=================================*/
 
 #define UART_RX_FIFO_SIZE       (16)
