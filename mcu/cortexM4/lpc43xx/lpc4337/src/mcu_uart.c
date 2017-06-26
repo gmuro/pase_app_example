@@ -164,43 +164,35 @@ extern void mcu_uart_enableRXInterrupt(bool isEnable)
     }
 }
 
-extern ssize_t ciaaDriverUart_read(ciaaDevices_deviceType const * const device, uint8_t* buffer, size_t const size)
+extern int32_t mcu_uart_read(uint8_t* buffer, size_t const size)
 {
-   ssize_t ret = -1;
-   UartControl_type * pUartControl;
+   int32_t ret = -1;
    uint8_t i;
 
    if(size != 0)
    {
-      if((device == ciaaDriverUartConst.devices[0]) ||
-         (device == ciaaDriverUartConst.devices[1]) ||
-         (device == ciaaDriverUartConst.devices[2]) )
+      if(size > uartControl[0].rxcnt)
       {
-         pUartControl = (UartControl_type *)device->layer;
-
-         if(size > pUartControl->rxcnt)
+         /* buffer has enough space */
+         ret = uartControl->rxcnt;
+         uartControl->rxcnt = 0;
+      }
+      else
+      {
+         /* buffer hasn't enough space */
+         ret = size;
+         uartControl->rxcnt -= size;
+      }
+      for(i = 0; i < ret; i++)
+      {
+         buffer[i] = uartControl->hwbuf[i];
+      }
+      if(uartControl->rxcnt != 0)
+      {
+         /* We removed data from the buffer, it is time to reorder it */
+         for(i = 0; i < uartControl->rxcnt ; i++)
          {
-            /* buffer has enough space */
-            ret = pUartControl->rxcnt;
-            pUartControl->rxcnt = 0;
-         }
-         else
-         {
-            /* buffer hasn't enough space */
-            ret = size;
-            pUartControl->rxcnt -= size;
-         }
-         for(i = 0; i < ret; i++)
-         {
-            buffer[i] = pUartControl->hwbuf[i];
-         }
-         if(pUartControl->rxcnt != 0)
-         {
-            /* We removed data from the buffer, it is time to reorder it */
-            for(i = 0; i < pUartControl->rxcnt ; i++)
-            {
-               pUartControl->hwbuf[i] = pUartControl->hwbuf[i + ret];
-            }
+            uartControl->hwbuf[i] = uartControl->hwbuf[i + ret];
          }
       }
    }
