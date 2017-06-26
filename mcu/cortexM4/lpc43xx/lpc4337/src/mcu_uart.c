@@ -241,20 +241,20 @@ ISR(UART2_IRQHandler)
    {
       do
       {
-         uartControl[1].hwbuf[uartControl[1].rxcnt] = Chip_UART_ReadByte(LPC_USART2);
-         uartControl[1].rxcnt++;
+         uartControl[0].hwbuf[uartControl[0].rxcnt] =
+                                                Chip_UART_ReadByte(LPC_USART2);
+         uartControl[0].rxcnt++;
       }while((Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_RDR) &&
-             (uartControl[1].rxcnt < UART_RX_FIFO_SIZE));
-
-      ciaaDriverUart_rxIndication(&ciaaDriverUart_device1, uartControl[1].rxcnt);
+             (uartControl[0].rxcnt < UART_RX_FIFO_SIZE));
    }
-   if((status & UART_LSR_THRE) && (Chip_UART_GetIntsEnabled(LPC_USART2) & UART_IER_THREINT))
+   if((status & UART_LSR_THRE) &&
+      (Chip_UART_GetIntsEnabled(LPC_USART2) &
+      UART_IER_THREINT))
    {
-      /* tx confirmation, 1 byte sent */
-      ciaaDriverUart_txConfirmation(&ciaaDriverUart_device1);
-
-      if(Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_THRE)
-      {  /* There is not more bytes to send, disable THRE irq */
+      if(Chip_UART_ReadLineStatus(LPC_USART2) &
+         UART_LSR_THRE)
+      {
+         /* There is not more bytes to send, disable THRE irq */
          Chip_UART_IntDisable(LPC_USART2, UART_IER_THREINT);
       }
    }

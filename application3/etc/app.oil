@@ -89,6 +89,12 @@ OSEK OSEK {
       }
    }
 
+   ISR UART2_IRQHandler {
+      INTERRUPT = UART2;
+      CATEGORY = 2;
+      PRIORITY = 0;
+   };
+
    COUNTER HardwareCounter {
       MAXALLOWEDVALUE = 1000;
       TICKSPERBASE = 1;
