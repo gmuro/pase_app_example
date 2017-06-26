@@ -85,6 +85,9 @@ extern void board_init(void)
 {
    int8_t i;
 
+   const char str_1[] = "Hello World! I am writing over UART device with \
+                         EDU-CIAA-NXP!!\n";
+   mcu_uart_write(str_1, strlen(str_1));
    for (i = 0 ; i < totalLeds ; i++)
    {
       mcu_gpio_setDirection(ledMap[i], MCU_GPIO_DIRECTION_OUTPUT);

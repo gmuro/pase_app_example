@@ -61,6 +61,8 @@
 extern void mcu_init(void)
 {
    mcu_gpio_init();
+   mcu_uart_init(9600);
+   mcu_uart_enable();
 }
 
 /** @} doxygen end group definition */
