@@ -194,21 +194,18 @@ extern int32_t mcu_uart_read(uint8_t* buffer, size_t const size)
    return ret;
 }
 
-extern ssize_t ciaaDriverUart_write(ciaaDevices_deviceType const * const device, uint8_t const * const buffer, size_t const size)
+extern int32_t mcu_uart_write(uint8_t const * const buffer, size_t const size)
 {
-   ssize_t ret = 0;
+   int32_t ret = 0;
 
-   if((device == ciaaDriverUartConst.devices[0]) ||
-      (device == ciaaDriverUartConst.devices[1]) ||
-      (device == ciaaDriverUartConst.devices[2]) )
+   while((Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_THRE) &&
+         (ret < size))
    {
-      while((Chip_UART_ReadLineStatus((LPC_USART_T *)device->loLayer) & UART_LSR_THRE) && (ret < size))
-      {
-         /* send first byte */
-         Chip_UART_SendByte((LPC_USART_T *)device->loLayer, buffer[ret]);
-         /* bytes written */
-         ret++;
-      }
+      /* send first byte */
+      Chip_UART_SendByte(LPC_USART2,
+                         buffer[ret]);
+      /* bytes written */
+      ret++;
    }
    return ret;
 }
