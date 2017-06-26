@@ -131,19 +131,19 @@ extern void mcu_uart_setFifoTriggerLevel(int32_t level)
                          (int32_t)level);
 }
 
-extern void mcu_uart_enableTXInterrupt(bool isEnable)
-{
-    if(isEnable)
-    {
-        /* enable THRE irq (TX) */
-        Chip_UART_IntEnable(LPC_USART2, UART_IER_THREINT);
-    }
-    else
-    {
-        /* disable THRE irq (TX) */
-        Chip_UART_IntDisable(LPC_USART2, UART_IER_THREINT);
-    }
-}
+//extern void mcu_uart_enableTXInterrupt(bool isEnable)
+//{
+//    if(isEnable)
+//    {
+//        /* enable THRE irq (TX) */
+//        Chip_UART_IntEnable(LPC_USART2, UART_IER_THREINT);
+//    }
+//    else
+//    {
+//        /* disable THRE irq (TX) */
+//        Chip_UART_IntDisable(LPC_USART2, UART_IER_THREINT);
+//    }
+//}
 
 extern void mcu_uart_enableRXInterrupt(bool isEnable)
 {
