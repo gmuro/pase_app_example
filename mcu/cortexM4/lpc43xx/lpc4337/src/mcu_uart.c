@@ -52,6 +52,7 @@
 /*==================[macros and definitions]=================================*/
 
 #define UART_RX_FIFO_SIZE       (16)
+#define UART_AVAILABLES 1
 
 typedef struct {
    uint8_t hwbuf[UART_RX_FIFO_SIZE];
@@ -85,13 +86,7 @@ static const p_uart_type p_uart[] =
 /*==================[internal data definition]===============================*/
 
 /** \brief Buffers */
-UartControl_type uartControl[3];
-
-/** \brief Device for UART 1 */
-static ciaaDevices_deviceType ciaaDriverUart_device1 = {
-   LPC_USART2              /** <= lower layer */
-};
-
+uartControl_type uartControl[UART_AVAILABLES];
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
