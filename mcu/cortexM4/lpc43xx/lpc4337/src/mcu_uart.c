@@ -258,11 +258,20 @@ extern int32_t mcu_uart_read(uint8_t* data, size_t const size)
 
 extern void mcu_uart_write(uint8_t const * const data, size_t const size)
 {
+   uint32_t i;
    char aux;
+   for(i = 0; i < size;i++)
+   {
+      cb_push_back(&circular_buffer,
+                   &data[i]);
+   }
+   mcu_uart_enableTXInterrupt(true);
 
    while((Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_THRE) &&
+         !isCbEmpty())
    {
       /* send first byte */
+      cb_pop_front(&circular_buffer,&aux);
       Chip_UART_SendByte(LPC_USART2,
                          aux);
    }
@@ -298,7 +307,7 @@ void mcu_uart_init(int32_t baudRate)
 ISR(UART2_IRQHandler)
 {
    uint8_t status = Chip_UART_ReadLineStatus(LPC_USART2);
-
+   char aux;
    mcu_uart_write(str_2, strlen(str_2));
 
    if(status & UART_LSR_RDR)
@@ -315,8 +324,15 @@ ISR(UART2_IRQHandler)
       (Chip_UART_GetIntsEnabled(LPC_USART2) &
       UART_IER_THREINT))
    {
-      if(Chip_UART_ReadLineStatus(LPC_USART2) &
-         UART_LSR_THRE)
+      if((Chip_UART_ReadLineStatus(LPC_USART2) &
+         UART_LSR_THRE) && !isCbEmpty())
+      {
+         /* send first byte */
+         cb_pop_front(&circular_buffer,&aux);
+         Chip_UART_SendByte(LPC_USART2,
+                            aux);
+      }
+      else if (isCbEmpty())
       {
          /* There is not more bytes to send, disable THRE irq */
          Chip_UART_IntDisable(LPC_USART2, UART_IER_THREINT);
