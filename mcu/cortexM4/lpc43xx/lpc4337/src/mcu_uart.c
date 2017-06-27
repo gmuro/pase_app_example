@@ -221,7 +221,7 @@ extern void mcu_uart_enableRXInterrupt(bool isEnable)
     }
 }
 
-extern int32_t mcu_uart_read(uint8_t* buffer, size_t const size)
+extern int32_t mcu_uart_read(uint8_t* data, size_t const size)
 {
    int32_t ret = -1;
    uint8_t i;
@@ -242,7 +242,7 @@ extern int32_t mcu_uart_read(uint8_t* buffer, size_t const size)
       }
       for(i = 0; i < ret; i++)
       {
-         buffer[i] = uartControl->hwbuf[i];
+         data[i] = uartControl->hwbuf[i];
       }
       if(uartControl->rxcnt != 0)
       {
