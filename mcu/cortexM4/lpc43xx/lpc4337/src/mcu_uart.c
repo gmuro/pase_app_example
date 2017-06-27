@@ -314,28 +314,34 @@ extern void mcu_uart_write(uint8_t const * const data, size_t const size)
 
 void mcu_uart_init(int32_t baudRate)
 {
-	cb_init(&circular_buffer,
-			UART_TX_BUFFER_SIZE,
-			sizeof(char));
+   cb_init(&circular_buffer,
+           UART_TX_BUFFER_SIZE,
+           sizeof(char));
 
-    /* init hardware */
-    /* UART2 (USB-UART) */
-    Chip_UART_Init(LPC_USART2);
-    Chip_UART_SetBaud(LPC_USART2, baudRate);
+   /* init hardware */
+   /* UART2 (USB-UART) */
+   Chip_UART_Init(LPC_USART2);
 
-    Chip_UART_SetupFIFOS(LPC_USART2,
-                         UART_FCR_FIFO_EN |
-                         UART_FCR_TRG_LEV0);
+   /*Set Baudrate*/
+   mcu_uart_setBaud(baudRate);
+   /*Set FiFo trigger level*/
+   mcu_uart_setFifoTriggerLevel(UART_FCR_TRG_LEV0);
 
-    Chip_UART_TXEnable(LPC_USART2);
-    Chip_SCU_PinMux(p_uart[0].tx.port,
-                    p_uart[0].tx.pin,
-                    MD_PDN,
-                    p_uart[0].modefunc);
-    Chip_SCU_PinMux(p_uart[0].rx.port,
-                    p_uart[0].rx.pin,
-                    MD_PLN|MD_EZI|MD_ZI,
-                    p_uart[0].modefunc);
+   Chip_UART_TXEnable(LPC_USART2);
+   /*Configure TX and RX Pins*/
+   Chip_SCU_PinMux(p_uart[0].tx.port,
+                   p_uart[0].tx.pin,
+                   MD_PDN,
+                   p_uart[0].modefunc);
+
+   Chip_SCU_PinMux(p_uart[0].rx.port,
+                   p_uart[0].rx.pin,
+                   MD_PLN|MD_EZI|MD_ZI,
+                   p_uart[0].modefunc);
+
+   /*Enable interrupts*/
+   mcu_uart_enableTXInterrupt(true);
+   mcu_uart_enableRXInterrupt(true);
 }
 
 /*==================[interrupt handlers]=====================================*/
