@@ -56,11 +56,6 @@
 #define UART_RX_FIFO_SIZE       (16)
 #define UART_AVAILABLES 1
 #define UART_TX_BUFFER_SIZE     1000
-const char str_2[] = "I approach to UART ISR\n";
-const char str_3[] = "I approach to UART Read function\n";
-
-static char uart_buffer[UART_TX_BUFFER_SIZE];
-static uint16_t buffer_index = UART_TX_BUFFER_SIZE - 1;
 
 typedef struct {
    uint8_t hwbuf[UART_RX_FIFO_SIZE];
@@ -225,7 +220,6 @@ extern int32_t mcu_uart_read(uint8_t* data, size_t const size)
 {
    int32_t ret = -1;
    uint8_t i;
-   mcu_uart_write(str_3, strlen(str_3));
    if(size != 0)
    {
       if(size > uartControl[0].rxcnt)
@@ -308,8 +302,6 @@ ISR(UART2_IRQHandler)
 {
    uint8_t status = Chip_UART_ReadLineStatus(LPC_USART2);
    char aux;
-   mcu_uart_write(str_2, strlen(str_2));
-
    if(status & UART_LSR_RDR)
    {
       do
