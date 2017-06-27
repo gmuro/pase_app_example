@@ -270,6 +270,10 @@ extern void mcu_uart_write(uint8_t const * const data, size_t const size)
 
 void mcu_uart_init(int32_t baudRate)
 {
+	cb_init(&circular_buffer,
+			UART_TX_BUFFER_SIZE,
+			sizeof(char));
+
     /* init hardware */
     /* UART2 (USB-UART) */
     Chip_UART_Init(LPC_USART2);
