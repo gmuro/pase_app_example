@@ -75,6 +75,11 @@ typedef struct
    uint16_t modefunc;
 }p_uart_type;
 
+
+/*Circular Buffer struct. Buffer should be a pointer, where you apply a malloc
+                          function, but to avoid this call, we assign a fixed
+                          value of chars. So that, the total amount of bytes
+                          in the initialization should be less than 1000. */
 typedef struct
 {
     char buffer[1000];     // data buffer
@@ -89,17 +94,49 @@ typedef struct
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-
+/*
+   Circular Buffer implementation
+   This buffer implements typical FIFO memory, with push and pop functions
+   to save and retrieve data, respectively.
+*/
+/*
+   @brief isCbEmpty: Says if circular buffer is empty or not.
+   @return true: Buffer is empty
+           false: Buffer has at least one element
+*/
 bool isCbEmpty(void);
+
+/*
+   @brief cb_pop_front: Retrieves one element from a given circular buffer
+   @param cb: pointer to a circular buffer struct which you want to retrieve
+              data
+   @param item: Item where to store the retrieved data.
+*/
 void cb_pop_front(circular_buffer_type *cb, void *item);
+
+/*
+   @brief cb_push_back: Save an element into a given circular buffer.
+   @param cb: pointer to a circular buffer struct where you want to save
+              data
+   @param item: Pointer to an item to store into the circular buffer.
+*/
 void cb_push_back(circular_buffer_type *cb, const void *item);
+
+/*
+   @brief cb_init: Circular buffer initialization function.
+   @param cb: POinter to a circular buffer struct you want to initialize.
+   @param capacity: Amount of element you want to store into your circular
+                    buffer.
+   @param sz: Size of type of element you want to store into circular buffer.
+*/
 void cb_init(circular_buffer_type *cb, size_t capacity, size_t sz);
 
 /*==================[internal data definition]===============================*/
 
-/** \brief Buffers */
+/** @brief RX Buffer */
 uartControl_type uartControl[UART_AVAILABLES];
 
+/* @brief TX circular buffer*/
 static const p_uart_type p_uart[] =
 {
    {{7,1},   {7,2},   FUNC6},       /*TX:{port-pin} RX:{port-pin}  modeFunc*/
@@ -110,6 +147,8 @@ circular_buffer_type circular_buffer;
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
+
+/*Circular Buffer implementation*/
 void cb_init(circular_buffer_type *cb, size_t capacity, size_t sz)
 {
     cb->buffer_end = (char *)cb->buffer + capacity * sz;
@@ -147,8 +186,10 @@ bool isCbEmpty()
 {
     return (circular_buffer.count == 0);
 }
+/*End of Circular Buffer implementation*/
 
 /*==================[external functions definition]==========================*/
+
 extern void mcu_uart_enable(void)
 {
    /* Restart FIFOS: set Enable, Reset content, set trigger level */
@@ -298,10 +339,15 @@ void mcu_uart_init(int32_t baudRate)
 }
 
 /*==================[interrupt handlers]=====================================*/
+
+/*
+   @brief: TX and RX Interrupt handler
+*/
 ISR(UART2_IRQHandler)
 {
    uint8_t status = Chip_UART_ReadLineStatus(LPC_USART2);
    char aux;
+   /* RX handler*/
    if(status & UART_LSR_RDR)
    {
       do
@@ -312,6 +358,8 @@ ISR(UART2_IRQHandler)
       }while((Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_RDR) &&
              (uartControl[0].rxcnt < UART_RX_FIFO_SIZE));
    }
+
+   /* TX Handler*/
    if((status & UART_LSR_THRE) &&
       (Chip_UART_GetIntsEnabled(LPC_USART2) &
       UART_IER_THREINT))
