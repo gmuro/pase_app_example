@@ -49,13 +49,18 @@
 #include "chip.h"
 #include "os.h"
 #include "mcu.h"
+#include <stdlib.h>
+#include <string.h>
 /*==================[macros and definitions]=================================*/
 
 #define UART_RX_FIFO_SIZE       (16)
 #define UART_AVAILABLES 1
-
+#define UART_TX_BUFFER_SIZE     1000
 const char str_2[] = "I approach to UART ISR\n";
 const char str_3[] = "I approach to UART Read function\n";
+
+static char uart_buffer[UART_TX_BUFFER_SIZE];
+static uint16_t buffer_index = UART_TX_BUFFER_SIZE - 1;
 
 typedef struct {
    uint8_t hwbuf[UART_RX_FIFO_SIZE];
@@ -75,24 +80,78 @@ typedef struct
    uint16_t modefunc;
 }p_uart_type;
 
-static const p_uart_type p_uart[] =
+typedef struct
 {
-   {{7,1},   {7,2},   FUNC6},       /*TX:{port-pin} RX:{port-pin}  modeFunc*/
-};
-
-
+    char buffer[1000];     // data buffer
+    void *buffer_end;      // end of data buffer
+    size_t capacity;       // maximum number of items in the buffer
+    size_t count;          // number of items in the buffer
+    size_t sz;             // size of each item in the buffer
+    void *head;            // pointer to head
+    void *tail;            // pointer to tail
+} circular_buffer_type;
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
 
+bool isCbEmpty(void);
+void cb_pop_front(circular_buffer_type *cb, void *item);
+void cb_push_back(circular_buffer_type *cb, const void *item);
+void cb_init(circular_buffer_type *cb, size_t capacity, size_t sz);
+
 /*==================[internal data definition]===============================*/
 
 /** \brief Buffers */
 uartControl_type uartControl[UART_AVAILABLES];
+
+static const p_uart_type p_uart[] =
+{
+   {{7,1},   {7,2},   FUNC6},       /*TX:{port-pin} RX:{port-pin}  modeFunc*/
+};
+
+circular_buffer_type circular_buffer;
+
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
+void cb_init(circular_buffer_type *cb, size_t capacity, size_t sz)
+{
+    cb->buffer_end = (char *)cb->buffer + capacity * sz;
+    cb->capacity = capacity;
+    cb->count = 0;
+    cb->sz = sz;
+    cb->head = cb->buffer;
+    cb->tail = cb->buffer;
+}
+
+void cb_push_back(circular_buffer_type *cb, const void *item)
+{
+    if(cb->count == cb->capacity){
+        // handle error
+    }
+    memcpy(cb->head, item, cb->sz);
+    cb->head = (char*)cb->head + cb->sz;
+    if(cb->head == cb->buffer_end)
+        cb->head = cb->buffer;
+    cb->count++;
+}
+
+void cb_pop_front(circular_buffer_type *cb, void *item)
+{
+    if(cb->count == 0){
+        // handle error
+    }
+    memcpy(item, cb->tail, cb->sz);
+    cb->tail = (char*)cb->tail + cb->sz;
+    if(cb->tail == cb->buffer_end)
+        cb->tail = cb->buffer;
+    cb->count--;
+}
+bool isCbEmpty()
+{
+    return (circular_buffer.count == 0);
+}
 
 /*==================[external functions definition]==========================*/
 extern void mcu_uart_enable(void)
