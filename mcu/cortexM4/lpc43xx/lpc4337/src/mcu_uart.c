@@ -197,20 +197,16 @@ extern int32_t mcu_uart_read(uint8_t* buffer, size_t const size)
    return ret;
 }
 
-extern int32_t mcu_uart_write(uint8_t const * const buffer, size_t const size)
+extern void mcu_uart_write(uint8_t const * const data, size_t const size)
 {
-   int32_t ret = 0;
+   char aux;
 
    while((Chip_UART_ReadLineStatus(LPC_USART2) & UART_LSR_THRE) &&
-         (ret < size))
    {
       /* send first byte */
       Chip_UART_SendByte(LPC_USART2,
-                         buffer[ret]);
-      /* bytes written */
-      ret++;
+                         aux);
    }
-   return ret;
 }
 
 void mcu_uart_init(int32_t baudRate)

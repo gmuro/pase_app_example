@@ -10,6 +10,6 @@ void mcu_uart_setBaud(int32_t baudRate);
 void mcu_uart_setFifoTriggerLevel(int32_t level);
 void mcu_uart_enableTXInterrupt(bool isEnable);
 int32_t mcu_uart_read(uint8_t* buffer, size_t const size);
-int32_t mcu_uart_write(uint8_t const * const buffer, size_t const size);
+void mcu_uart_write(uint8_t const * const buffer, size_t const size);
 
 #endif
