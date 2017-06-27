@@ -82,13 +82,13 @@ typedef struct
                           in the initialization should be less than 1000. */
 typedef struct
 {
-    char buffer[1000];     // data buffer
-    void *buffer_end;      // end of data buffer
-    size_t capacity;       // maximum number of items in the buffer
-    size_t count;          // number of items in the buffer
-    size_t sz;             // size of each item in the buffer
-    void *head;            // pointer to head
-    void *tail;            // pointer to tail
+   char buffer[1000];     // data buffer
+   void *buffer_end;      // end of data buffer
+   size_t capacity;       // maximum number of items in the buffer
+   size_t count;          // number of items in the buffer
+   size_t sz;             // size of each item in the buffer
+   void *head;            // pointer to head
+   void *tail;            // pointer to tail
 } circular_buffer_type;
 
 /*==================[internal data declaration]==============================*/
@@ -137,12 +137,12 @@ void cb_init(circular_buffer_type *cb, size_t capacity, size_t sz);
 uartControl_type uartControl[UART_AVAILABLES];
 
 /* @brief TX circular buffer*/
+circular_buffer_type circular_buffer;
+
 static const p_uart_type p_uart[] =
 {
    {{7,1},   {7,2},   FUNC6},       /*TX:{port-pin} RX:{port-pin}  modeFunc*/
 };
-
-circular_buffer_type circular_buffer;
 
 /*==================[external data definition]===============================*/
 
