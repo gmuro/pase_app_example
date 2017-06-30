@@ -111,7 +111,8 @@ void ErrorHook(void)
 TASK(InitTask)
 {
    bsp_init();
-
+   char str[] = "Hello world! This is EDU-CIAA-NXP!";
+   mcu_uart_write(str, strlen(str));
    SetRelAlarm(ActivateKeyboardTask, 10, KEYBOARD_TASK_TIME_MS);
    SetRelAlarm(ActivateUserTask, 50, 50);
 
