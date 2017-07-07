@@ -79,7 +79,7 @@ typedef struct
 static const p_gpio_type p_gpio[] =
 {
    {{2,0},   {5,0},   FUNC4},
-   {{2,1},   {5,1},   FUNC3},
+   {{2,1},   {5,1},   FUNC4},
    {{2,2},   {5,2},   FUNC4},
    {{2,10},  {0,14},  FUNC0},
    {{2,11},  {1,11},  FUNC0},
