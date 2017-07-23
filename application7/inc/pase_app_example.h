@@ -1,5 +1,4 @@
 /* Copyright 2017, Gustavo Muro
- * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -31,39 +30,34 @@
  *
  */
 
-/** \brief source para MCU
+#ifndef PASE_APP_EXAMPLE_H_
+#define PASE_APP_EXAMPLE_H_
+/** \brief PASE APP EXAMPLE
  **
- ** archivo de inicilización del microcontrolador
+ ** ejemplo de aplicación usando CIAA Firmware
  **
  **/
 
-/** \addtogroup PASE_APP_EXAMPLE
+/** \addtogroup
  ** @{ */
-/** \addtogroup MCU
+/** \addtogroup
+ ** @{ */
+/** \addtogroup
  ** @{ */
 
 /*==================[inclusions]=============================================*/
-#include "mcu.h"
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[external data definition]===============================*/
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-extern void mcu_init(void)
-{
-   mcu_gpio_init();
-   mcu_uart_init(9600);
-}
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef PASE_APP_EXAMPLE_H_ */
+
